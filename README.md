@@ -36,8 +36,8 @@ transcoder is a GUI-based tool for transcoding, designed to provide powerful aud
 ## Current Progress
 
 - [x] Project initialization
-- [x] Basic transcoding functionality implemented
-- [x] GUI designed and implemented
+- [ ] Basic transcoding functionality implemented
+- [ ] GUI designed and implemented
 - [ ] Batch processing support
 - [ ] GPU acceleration support
 - [ ] Advanced transcoding options integration
