@@ -24,14 +24,13 @@ public:
     Transcoder(QWidget *parent = nullptr);
     ~Transcoder();
 
-
-
 public slots:
     void renameFile();
     void startTranscode();
+    void selectSourceDirs();
+    void selectTargetDir();
     void updateProgress(int value);
     void onTranscodeFinished();
-
 
 private:
     Ui::Transcoder *ui;

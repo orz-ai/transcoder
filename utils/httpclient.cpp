@@ -1,5 +1,13 @@
-#include "HttpClient.h"
+﻿#include "HttpClient.h"
 #include <QEventLoop>
+
+
+/*
+ * eg:
+ * HttpClient client;
+ * QString response = client.get("https://orz.ai/dailynews/?platform=baidu");
+ * qDebug() << "Response:" << response;
+ * */
 
 HttpClient::HttpClient() {
     networkManager = new QNetworkAccessManager();

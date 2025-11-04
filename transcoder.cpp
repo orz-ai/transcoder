@@ -18,7 +18,12 @@ Transcoder::Transcoder(QWidget *parent)
     ui->progressBar->setValue(0);
 
     connect(ui->renameFileBtn, &QPushButton::clicked, this, &Transcoder::renameFile);
+    // 开始转码
     connect(ui->transcodeBtn, &QPushButton::clicked, this, &Transcoder::startTranscode);
+    // 选择需要转码的目录
+    connect(ui->sourceDirBtn, &QPushButton::clicked, this, &Transcoder::selectSourceDirs);
+    // 选择转码后文件存放的目录
+    connect(ui->targetDirButton, &QPushButton::clicked, this, &Transcoder::selectTargetDir);
 }
 
 Transcoder::~Transcoder()
@@ -54,9 +59,8 @@ void Transcoder::startTranscode()
 //    QString response = client.get("https://orz.ai/dailynews/?platform=baidu");
 //    qDebug() << "Response:" << response;
     QFileDialog dialog(nullptr, QString::fromLocal8Bit("select dirs or files"));
-    dialog.setFileMode(QFileDialog::ExistingFiles);
+    dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
-
     dialog.setDirectory(QDir::homePath());
 
     // 添加目录选择功能
@@ -82,6 +86,55 @@ void Transcoder::startTranscode()
 
 }
 
+void Transcoder::selectSourceDirs()
+{
+
+    QFileDialog dialog(nullptr, QString::fromLocal8Bit("选择需要转码的目录(支持多选)"));
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
+    dialog.setDirectory(QDir::homePath());
+
+    // 添加目录选择功能
+    QListView *listView = dialog.findChild<QListView*>("listView");
+    if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
+    QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
+    if (treeView) treeView->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        QStringList selectedPaths = dialog.selectedFiles();
+        qDebug() << "selected paths: " << selectedPaths;
+
+        // check dirs and files
+        QStringList validFiles = validatePaths(selectedPaths);
+        if (validFiles.isEmpty()) {
+            QMessageBox::warning(nullptr, QString::fromLocal8Bit("ERROR"), QString::fromLocal8Bit("no effect files!"));
+            return;
+        }
+
+
+        transcoding(validFiles);
+    }
+
+}
+
+void Transcoder::selectTargetDir()
+{
+    QFileDialog dialog(nullptr, QString::fromLocal8Bit("选择转码结果保存目录"));
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
+    dialog.setDirectory(QDir::homePath());
+
+    QListView *listView = dialog.findChild<QListView*>("listView");
+    if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
+    QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
+    if (treeView) treeView->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    if (dialog.exec() == QDialog::Accepted) {
+
+    }
+
+}
+
 void Transcoder::transcoding(const QStringList &files)
 {
 
@@ -95,11 +148,11 @@ void Transcoder::transcoding(const QStringList &files)
     connect(worker, &TranscodeWorker::finished, this, &Transcoder::onTranscodeFinished);
 
     worker->start();
-    QMessageBox::information(nullptr, QString::fromLocal8Bit("Success"), QString::fromLocal8Bit("task is proccessing!"));
+    QMessageBox::information(nullptr, QString::fromLocal8Bit("成功"), QString::fromLocal8Bit("task is proccessing!"));
 }
 
 bool Transcoder::isValidFile(const QFileInfo &fileInfo) {
-    // supported ext.
+    // 支持的后缀
     QStringList supportedExtensions = {"mp4", "mkv", "avi", "mov"};
     return supportedExtensions.contains(fileInfo.suffix().toLower());
 }
