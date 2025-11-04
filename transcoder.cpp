@@ -1,4 +1,4 @@
-
+ï»¿
 #include "transcoder.h"
 #include "ui_transcoder.h"
 #include <RenameDialog.h>
@@ -18,12 +18,14 @@ Transcoder::Transcoder(QWidget *parent)
     ui->progressBar->setValue(0);
 
     connect(ui->renameFileBtn, &QPushButton::clicked, this, &Transcoder::renameFile);
-    // ¿ªÊ¼×ªÂë
+    // é€‰æ‹©
     connect(ui->transcodeBtn, &QPushButton::clicked, this, &Transcoder::startTranscode);
-    // Ñ¡ÔñĞèÒª×ªÂëµÄÄ¿Â¼
+    // é€‰æ‹©è½¬ç ç›®å½•
     connect(ui->sourceDirBtn, &QPushButton::clicked, this, &Transcoder::selectSourceDirs);
-    // Ñ¡Ôñ×ªÂëºóÎÄ¼ş´æ·ÅµÄÄ¿Â¼
+    // é€‰æ‹©è½¬ç ç»“æœä¿å­˜ç›®å½•
     connect(ui->targetDirButton, &QPushButton::clicked, this, &Transcoder::selectTargetDir);
+
+
 }
 
 Transcoder::~Transcoder()
@@ -34,22 +36,20 @@ Transcoder::~Transcoder()
 void Transcoder::renameFile()
 {
     RenameDialog *dialog = new RenameDialog(this);
-    Qt::WindowFlags flags = dialog->windowFlags();                     // ĞèÒª»ñÈ¡·µ»ØÖµ
-    dialog->setWindowFlags(flags | Qt::MSWindowsFixedSizeDialogHint);  // ÉèÖÃ¶Ô»°¿ò¹Ì¶¨´óĞ¡
+    Qt::WindowFlags flags = dialog->windowFlags();
+    dialog->setWindowFlags(flags | Qt::MSWindowsFixedSizeDialogHint);
 
 //    QString item = ui->lineEdit->text();
 //    ptr->SetValue(item);
 
-    int ref = dialog->exec();             // ÒÔÄ£Ì¬·½Ê½ÏÔÊ¾¶Ô»°¿ò
-    if (ref==QDialog::Accepted)        // OK¼ü±»°´ÏÂ,¶Ô»°¿ò¹Ø±Õ
+    int ref = dialog->exec();
+    if (ref==QDialog::Accepted)
     {
-        // µ±BtnOk±»°´ÏÂÊ±,ÔòÉèÖÃ¶Ô»°¿òÖĞµÄÊı¾İ
 //        QString the_value = ptr->GetValue();
 //        std::cout << "value = " << the_value.toStdString().data() << std::endl;
 //        ui->lineEdit->setText(the_value);
     }
 
-    // É¾³ıÊÍ·Å¶Ô»°¿ò¾ä±ú
     delete dialog;
 }
 
@@ -63,7 +63,6 @@ void Transcoder::startTranscode()
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
     dialog.setDirectory(QDir::homePath());
 
-    // Ìí¼ÓÄ¿Â¼Ñ¡Ôñ¹¦ÄÜ
     QListView *listView = dialog.findChild<QListView*>("listView");
     if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
     QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
@@ -89,12 +88,11 @@ void Transcoder::startTranscode()
 void Transcoder::selectSourceDirs()
 {
 
-    QFileDialog dialog(nullptr, QString::fromLocal8Bit("Ñ¡ÔñĞèÒª×ªÂëµÄÄ¿Â¼(Ö§³Ö¶àÑ¡)"));
+    QFileDialog dialog(nullptr, QString::fromLocal8Bit("é€‰æ‹©è½¬ç ç›®å½•"));
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
     dialog.setDirectory(QDir::homePath());
 
-    // Ìí¼ÓÄ¿Â¼Ñ¡Ôñ¹¦ÄÜ
     QListView *listView = dialog.findChild<QListView*>("listView");
     if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
     QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
@@ -102,24 +100,21 @@ void Transcoder::selectSourceDirs()
 
     if (dialog.exec() == QDialog::Accepted) {
         QStringList selectedPaths = dialog.selectedFiles();
-        qDebug() << "selected paths: " << selectedPaths;
+        qDebug() << "é€‰æ‹©äº†ï¼š" << selectedPaths;
 
-        // check dirs and files
         QStringList validFiles = validatePaths(selectedPaths);
         if (validFiles.isEmpty()) {
-            QMessageBox::warning(nullptr, QString::fromLocal8Bit("ERROR"), QString::fromLocal8Bit("no effect files!"));
+            QMessageBox::warning(nullptr, QString::fromLocal8Bit("é”™è¯¯"), QString::fromLocal8Bit("æ²¡æœ‰æ£€æµ‹åˆ°è§†é¢‘æ–‡ä»¶ï¼"));
             return;
         }
 
-
-        transcoding(validFiles);
+        this->selecedPaths = validFiles;
     }
-
 }
 
 void Transcoder::selectTargetDir()
 {
-    QFileDialog dialog(nullptr, QString::fromLocal8Bit("Ñ¡Ôñ×ªÂë½á¹û±£´æÄ¿Â¼"));
+    QFileDialog dialog(nullptr, QString::fromLocal8Bit("é€‰æ‹©ä¿å­˜ç›®å½•"));
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
     dialog.setDirectory(QDir::homePath());
@@ -130,14 +125,13 @@ void Transcoder::selectTargetDir()
     if (treeView) treeView->setSelectionMode(QAbstractItemView::MultiSelection);
 
     if (dialog.exec() == QDialog::Accepted) {
-
+        QStringList selectedPaths = dialog.selectedFiles();
+        this->targetPath = selectedPaths.first();
     }
-
 }
 
 void Transcoder::transcoding(const QStringList &files)
 {
-
     qDebug() << "start transcoding files: " << files;
     worker = new TranscodeWorker(files, this);
     ui->progressBar->setValue(0);
@@ -148,11 +142,10 @@ void Transcoder::transcoding(const QStringList &files)
     connect(worker, &TranscodeWorker::finished, this, &Transcoder::onTranscodeFinished);
 
     worker->start();
-    QMessageBox::information(nullptr, QString::fromLocal8Bit("³É¹¦"), QString::fromLocal8Bit("task is proccessing!"));
+    QMessageBox::information(nullptr, QString::fromLocal8Bit("æç¤º"), QString::fromLocal8Bit("è½¬ç ä»»åŠ¡å·²å¼€å§‹ï¼"));
 }
 
 bool Transcoder::isValidFile(const QFileInfo &fileInfo) {
-    // Ö§³ÖµÄºó×º
     QStringList supportedExtensions = {"mp4", "mkv", "avi", "mov"};
     return supportedExtensions.contains(fileInfo.suffix().toLower());
 }
@@ -185,6 +178,15 @@ QStringList Transcoder::validatePaths(const QStringList &paths)
     return validFiles;
 }
 
+QString Transcoder::buildTranscodeCommand(QString srcPath, QString targetPath) {
+    QString cmd = QString("ffmpeg -i %1 -c:v libx264 -s 720x1280 -r 30 -crf %2 -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv -movflags faststart -profile:v high %3")
+        .arg(srcPath)
+        .arg(23)  // CRF å€¼
+        .arg(targetPath);
+
+    return cmd;
+}
+
 void Transcoder::updateProgress(int value) {
     ui->progressBar->setValue(value);
 }
@@ -195,7 +197,7 @@ void Transcoder::onTranscodeFinished() {
     worker->deleteLater();
     worker = nullptr;
 
-    QMessageBox::information(this, "Success", "All files transcode completely!");
+    QMessageBox::information(this, QString::fromLocal8Bit("æˆåŠŸ"), QString::fromLocal8Bit("æ‰€æœ‰è§†é¢‘æ–‡ä»¶è½¬ç æˆåŠŸï¼"));
 }
 
 

@@ -9,8 +9,6 @@
 #include <QTreeView>
 #include "transcodeworker.h"
 
-
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class Transcoder; }
 QT_END_NAMESPACE
@@ -37,8 +35,11 @@ private:
     void transcoding(const QStringList &files);
     QStringList validatePaths(const QStringList &paths);
     bool isValidFile(const QFileInfo &file);
+    QString buildTranscodeCommand(QString srcPath, QString targetPath);
 
     TranscodeWorker *worker;
+    QStringList selecedPaths;
+    QString targetPath;
 };
 
 #endif // TRANSCODER_H

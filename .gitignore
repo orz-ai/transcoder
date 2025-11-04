@@ -1,3 +1,55 @@
+# Existing
 cmake-build-debug-qt
 .idea
 *.TMP
+
+# IDE/Editor
+.vs/
+.vscode/
+
+# Qt qmake / QtCreator user-specific
+*.pro.user
+.qmake.stash
+.qmake.cache
+
+# Build output folders
+debug/
+release/
+out/
+out/build/
+build/
+cmake-build-*/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+CTestTestfile.cmake
+cmake_install.cmake
+CMakeTmp/
+
+# Qt generated files (uic/moc/rcc)
+ui_*.h
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+moc_predefs.h*
+
+# Visual Studio compiler artifacts
+*.obj
+*.pdb
+*.idb
+*.ilk
+*.ipch
+*.tlog
+*.log
+*.VC.db
+*.VC.opendb
+*.sdf
+*.opensdf
+
+# Deployment artifacts
+dist/
+
+# Misc
+qt_work.log

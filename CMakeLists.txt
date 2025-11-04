@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.20)
 project(transcoder LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -16,7 +16,7 @@ set(CMAKE_PREFIX_PATH "D:\\Qt\\5.15.2\\msvc2019_64")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # Automatically collect all source and header files
-file(GLOB_RECURSE SOURCES "*.cpp" "*.h")
+file(GLOB_RECURSE SOURCES "*.cpp" "*.h" "*.qrc")
 
 # exclude generated files
 file(GLOB_RECURSE EXCLUDED_FILES "${CMAKE_BINARY_DIR}/**/*")
