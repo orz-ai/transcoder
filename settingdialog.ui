@@ -6,52 +6,715 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>853</width>
-    <height>393</height>
+    <width>900</width>
+    <height>600</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>600</height>
+   </size>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>500</x>
-     <y>340</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
+  <property name="windowTitle">
+   <string>设置</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>16</number>
    </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+   <property name="leftMargin">
+    <number>20</number>
    </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   <property name="topMargin">
+    <number>20</number>
    </property>
-  </widget>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>831</width>
-     <height>321</height>
-    </rect>
+   <property name="rightMargin">
+    <number>20</number>
    </property>
-   <property name="currentIndex">
-    <number>1</number>
+   <property name="bottomMargin">
+    <number>20</number>
    </property>
-   <widget class="QWidget" name="transcodeSettingTab">
-    <attribute name="title">
-     <string>转码参数设置</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="systemSettingTab">
-    <attribute name="title">
-     <string>系统设置</string>
-    </attribute>
-   </widget>
-  </widget>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="transcodeSettingTab">
+      <attribute name="title">
+       <string>转码参数设置</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="transcodeLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="transcodeScrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="transcodeScrollWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>817</width>
+            <height>485</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="transcodeContentLayout">
+           <property name="spacing">
+            <number>20</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="videoCodecGroup">
+             <property name="title">
+              <string>视频编码设置</string>
+             </property>
+             <layout class="QGridLayout" name="videoCodecLayout">
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>12</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="codecLabel">
+                <property name="text">
+                 <string>编码器:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="codecComboBox">
+                <item>
+                 <property name="text">
+                  <string>H.264 (libx264)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>H.265 (libx265)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>AV1 (libaom-av1)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="crfLabel">
+                <property name="text">
+                 <string>质量 (CRF):</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="crfLayout">
+                <item>
+                 <widget class="QSlider" name="crfSlider">
+                  <property name="minimum">
+                   <number>12</number>
+                  </property>
+                  <property name="maximum">
+                   <number>35</number>
+                  </property>
+                  <property name="value">
+                   <number>23</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="crfSpinBox">
+                  <property name="minimum">
+                   <number>12</number>
+                  </property>
+                  <property name="maximum">
+                   <number>35</number>
+                  </property>
+                  <property name="value">
+                   <number>23</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="presetLabel">
+                <property name="text">
+                 <string>编码预设:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QComboBox" name="presetComboBox">
+                <item>
+                 <property name="text">
+                  <string>ultrafast (最快)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>superfast</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>veryfast</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>faster</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>fast</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>medium (推荐)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>slow</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>slower</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>veryslow (最慢)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="videoParamsGroup">
+             <property name="title">
+              <string>视频参数</string>
+             </property>
+             <layout class="QGridLayout" name="videoParamsLayout">
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>12</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="resolutionLabel">
+                <property name="text">
+                 <string>分辨率:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="resolutionComboBox">
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>1920x1080 (1080p)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>1280x720 (720p)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>720x1280 (竖屏720p)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>1080x1920 (竖屏1080p)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>原始尺寸</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="framerateLabel">
+                <property name="text">
+                 <string>帧率 (FPS):</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="framerateSpinBox">
+                <property name="suffix">
+                 <string> fps</string>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>120</number>
+                </property>
+                <property name="value">
+                 <number>30</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="pixelFormatLabel">
+                <property name="text">
+                 <string>像素格式:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QComboBox" name="pixelFormatComboBox">
+                <item>
+                 <property name="text">
+                  <string>yuv420p (推荐)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>yuv444p</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>yuv422p</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="advancedGroup">
+             <property name="title">
+              <string>高级设置</string>
+             </property>
+             <layout class="QGridLayout" name="advancedLayout">
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>12</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="colorspaceLabel">
+                <property name="text">
+                 <string>色彩空间:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="colorspaceComboBox">
+                <item>
+                 <property name="text">
+                  <string>bt709 (推荐)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>bt601</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>bt2020</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="profileLabel">
+                <property name="text">
+                 <string>编码档次:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="profileComboBox">
+                <item>
+                 <property name="text">
+                  <string>high (高)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>main (主)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>baseline (基线)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="threadsLabel">
+                <property name="text">
+                 <string>线程数:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="threadsSpinBox">
+                <property name="specialValueText">
+                 <string>自动</string>
+                </property>
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>32</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="QCheckBox" name="faststartCheckBox">
+                <property name="text">
+                 <string>启用快速启动 (movflags faststart)</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="transcodeVerticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="systemSettingTab">
+      <attribute name="title">
+       <string>系统设置</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="systemLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="systemScrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="systemScrollWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>834</width>
+            <height>470</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="systemContentLayout">
+           <property name="spacing">
+            <number>20</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="uiGroup">
+             <property name="title">
+              <string>界面设置</string>
+             </property>
+             <layout class="QGridLayout" name="uiLayout">
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>12</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="themeLabel">
+                <property name="text">
+                 <string>界面主题:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="themeComboBox">
+                <item>
+                 <property name="text">
+                  <string>现代浅色主题</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>深色主题</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="languageLabel">
+                <property name="text">
+                 <string>界面语言:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="languageComboBox">
+                <item>
+                 <property name="text">
+                  <string>中文 (简体)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>English</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="pathGroup">
+             <property name="title">
+              <string>默认路径</string>
+             </property>
+             <layout class="QGridLayout" name="pathLayout">
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>12</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="defaultSourceLabel">
+                <property name="text">
+                 <string>默认源目录:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <layout class="QHBoxLayout" name="sourcePathLayout">
+                <item>
+                 <widget class="QLineEdit" name="defaultSourceLineEdit">
+                  <property name="placeholderText">
+                   <string>选择默认的视频源目录</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="browseSourceButton">
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>浏览</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="defaultTargetLabel">
+                <property name="text">
+                 <string>默认输出目录:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="targetPathLayout">
+                <item>
+                 <widget class="QLineEdit" name="defaultTargetLineEdit">
+                  <property name="placeholderText">
+                   <string>选择默认的输出目录</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="browseTargetButton">
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>浏览</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="taskGroup">
+             <property name="title">
+              <string>任务设置</string>
+             </property>
+             <layout class="QGridLayout" name="taskLayout">
+              <property name="horizontalSpacing">
+               <number>16</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>12</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="maxJobsLabel">
+                <property name="text">
+                 <string>最大并发任务数:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="maxJobsSpinBox">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>8</number>
+                </property>
+                <property name="value">
+                 <number>2</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <widget class="QCheckBox" name="autoSaveProgressCheckBox">
+                <property name="text">
+                 <string>自动保存转码进度</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QCheckBox" name="showNotificationsCheckBox">
+                <property name="text">
+                 <string>显示系统通知</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="QCheckBox" name="autoStartCheckBox">
+                <property name="text">
+                 <string>开机自动启动</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="systemVerticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="resetButton">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>恢复默认</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections>
@@ -84,6 +747,38 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>crfSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>crfSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>200</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>300</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>crfSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>crfSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>300</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>200</x>
+     <y>150</y>
     </hint>
    </hints>
   </connection>

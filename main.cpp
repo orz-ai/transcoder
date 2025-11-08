@@ -1,5 +1,6 @@
 ﻿
 #include "transcoder.h"
+#include "configmanager.h"
 
 #include <QApplication>
 #include <QTextCodec>
@@ -12,8 +13,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    // 初始化配置管理器
+    ConfigManager *config = ConfigManager::instance();
+
     a.setStyle(QStyleFactory::create("Fusion"));
-    QFile qss(":/styles/modern.qss");
+
+    // 根据配置加载主题
+    QString themeName = config->getSystemSettings().theme;
+    QString themeFile = (themeName == "modern") ? ":/styles/modern.qss" : ":/styles/dark.qss";
+    QFile qss(themeFile);
     if (qss.open(QFile::ReadOnly | QFile::Text))
     {
         a.setStyleSheet(QString::fromUtf8(qss.readAll()));
@@ -24,11 +32,10 @@ int main(int argc, char *argv[])
     w.resize(QSize(257, 679));
     w.show();
 
-
-    auto menus = w.menuBar()->findChildren<QMenu*>();
+    auto menus = w.menuBar()->findChildren<QMenu *>();
     for (auto *menu : menus)
     {
-        menu-> setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+        menu->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
         menu->setAttribute(Qt::WA_TranslucentBackground);
     }
 

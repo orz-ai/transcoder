@@ -140,11 +140,66 @@ QDateEdit, QTimeEdit, QDateTimeEdit {
     padding: 8px 12px;
     selection-background-color: #64b5f6;
     selection-color: #ffffff;
+    min-height: 16px;
 }
 
-QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, 
+QSpinBox:focus, QDoubleSpinBox:focus {
     border: 2px solid #42a5f5;
     background: #fafbfc;
+}
+
+QLineEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover {
+    border: 2px solid #90caf9;
+}
+
+/* SpinBox 特殊样式 */
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #f8f9fa,
+                                stop:1 #e9ecef);
+    border: 1px solid #ced4da;
+    border-top-right-radius: 6px;
+    width: 20px;
+}
+
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #bbdefb);
+    border: 1px solid #90caf9;
+}
+
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #f8f9fa,
+                                stop:1 #e9ecef);
+    border: 1px solid #ced4da;
+    border-bottom-right-radius: 6px;
+    width: 20px;
+}
+
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #bbdefb);
+    border: 1px solid #90caf9;
+}
+
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid #6c757d;
+    width: 0;
+    height: 0;
+}
+
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #6c757d;
+    width: 0;
+    height: 0;
 }
 
 /* 下拉框 */
@@ -154,20 +209,45 @@ QComboBox {
     border: 2px solid #e9ecef;
     border-radius: 8px;
     padding: 8px 12px;
+    padding-right: 35px; /* 为下拉箭头留出空间 */
     min-width: 80px;
+    min-height: 20px;
+}
+
+QComboBox:hover {
+    border: 2px solid #90caf9;
+    background: #f8f9fa;
 }
 
 QComboBox:focus {
     border: 2px solid #42a5f5;
+    background: #fafbfc;
+}
+
+QComboBox:on { /* 下拉框展开时 */
+    padding-top: 3px;
+    padding-left: 4px;
 }
 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 30px;
-    border-left: 1px solid #e9ecef;
+    border-left-width: 1px;
+    border-left-color: #e9ecef;
+    border-left-style: solid;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:1 #f8f9fa);
+}
+
+QComboBox::drop-down:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #bbdefb);
+    border-left-color: #42a5f5;
 }
 
 QComboBox::down-arrow {
@@ -177,6 +257,166 @@ QComboBox::down-arrow {
     border-top: 6px solid #6c757d;
     width: 0;
     height: 0;
+}
+
+QComboBox::down-arrow:hover {
+    border-top: 6px solid #1976d2;
+}
+
+/* 下拉菜单样式 */
+/* 处理QComboBox弹出菜单的外层容器 */
+QComboBox QFrame {
+    background: transparent;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+QComboBox QAbstractItemView {
+    background: #ffffff;
+    border: 2px solid #42a5f5;
+    border-radius: 8px;
+    color: #495057;
+    selection-background-color: #e3f2fd;
+    selection-color: #1565c0;
+    outline: none;
+    padding: 4px;
+    margin: 0px;
+    alternate-background-color: transparent;
+    gridline-color: transparent;
+    show-decoration-selected: 1;
+}
+
+/* 额外处理可能的外层窗口 */
+QComboBox QAbstractItemView::item {
+    height: 30px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 2px;
+    background: transparent;
+    border: none;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #bbdefb);
+    color: #1565c0;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background: #f1f8ff;
+    color: #1976d2;
+}
+
+/* 滑块样式 */
+QSlider::groove:horizontal {
+    background: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:0.5 #42a5f5,
+                                stop:1 #1976d2);
+    border: 2px solid #42a5f5;
+    width: 20px;
+    height: 20px;
+    border-radius: 12px;
+    margin: -7px 0;
+}
+
+QSlider::handle:horizontal:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:0.5 #64b5f6,
+                                stop:1 #42a5f5);
+    border: 2px solid #1976d2;
+}
+
+QSlider::handle:horizontal:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:0.5 #1976d2,
+                                stop:1 #0d47a1);
+    border: 2px solid #0d47a1;
+}
+
+QSlider::sub-page:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop:0 #42a5f5,
+                                stop:1 #1976d2);
+    border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+/* 复选框样式 */
+QCheckBox {
+    color: #495057;
+    font-weight: 500;
+    spacing: 8px;
+}
+
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+QCheckBox::indicator:hover {
+    border: 2px solid #42a5f5;
+    background: #f1f8ff;
+}
+
+QCheckBox::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #42a5f5,
+                                stop:1 #1976d2);
+    border: 2px solid #1976d2;
+    image: none;
+}
+
+QCheckBox::indicator:checked:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #64b5f6,
+                                stop:1 #42a5f5);
+    border: 2px solid #1565c0;
+}
+
+QCheckBox::indicator:checked::after {
+    content: "✓";
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* 滚动区域样式 */
+QScrollArea {
+    background: transparent;
+    border: none;
+}
+
+QScrollArea > QWidget > QWidget {
+    background: transparent;
+}
+
+/* 对话框按钮盒子 */
+QDialogButtonBox {
+    background: transparent;
+}
+
+QDialogButtonBox QPushButton {
+    min-width: 80px;
+    padding: 8px 16px;
 }
 
 /* 分组框 */
@@ -364,4 +604,357 @@ QDialog {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #ffffff,
                                 stop:1 #f8f9fa);
+}
+
+/* 设置对话框特殊样式 */
+SettingDialog {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #fafbfc,
+                                stop:0.3 #f1f8ff,
+                                stop:0.7 #f8fbff,
+                                stop:1 #ffffff);
+}
+
+/* 设置页面分组框增强样式 */
+SettingDialog QGroupBox {
+
+    border-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-top: 20px;
+    padding-top: 20px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 rgba(255, 255, 255, 0.95),
+                                stop:1 rgba(248, 249, 250, 0.8));
+    font-weight: 500;
+}
+
+SettingDialog QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 6px 16px;
+    color: #1976d2;
+    font-weight: 600;
+    font-size: 13px;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop:0 #ffffff,
+                                stop:1 #f1f8ff);
+    border: 1px solid #42a5f5;
+    border-radius: 8px;
+
+}
+
+/* 设置页面标签增强 */
+SettingDialog QLabel {
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+/* 设置页面选项卡增强 */
+SettingDialog QTabWidget::pane {
+
+    border-radius: 12px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:1 #f8fafb);
+}
+
+SettingDialog QTabBar::tab {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #f8f9fa,
+                                stop:1 #e9ecef);
+    color: #6c757d;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-right: 3px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+SettingDialog QTabBar::tab:selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:1 #f1f8ff);
+    color: #1976d2;
+}
+
+SettingDialog QTabBar::tab:hover:!selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #f1f8ff);
+    color: #1976d2;
+    border: 1px solid #90caf9;
+}
+
+/* 设置页面按钮增强 */
+SettingDialog QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:0.5 #f8f9fa,
+                                stop:1 #e9ecef);
+    color: #495057;
+    border: 2px solid #ced4da;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 600;
+    min-height: 18px;
+    font-size: 12px;
+}
+
+SettingDialog QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:0.5 #f1f8ff,
+                                stop:1 #bbdefb);
+    border: 2px solid #42a5f5;
+    color: #1565c0;
+}
+
+SettingDialog QPushButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #bbdefb,
+                                stop:1 #90caf9);
+    border: 2px solid #1976d2;
+    color: #0d47a1;
+}
+
+/* 重置按钮特殊样式 */
+SettingDialog QPushButton#resetButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #fff3e0,
+                                stop:1 #ffe0b2);
+    border: 2px solid #ffb74d;
+    color: #e65100;
+}
+
+SettingDialog QPushButton#resetButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffe0b2,
+                                stop:1 #ffcc80);
+    border: 2px solid #ff9800;
+    color: #bf360c;
+}
+
+/* 路径浏览按钮样式 */
+SettingDialog QPushButton#browseSourceButton, 
+SettingDialog QPushButton#browseTargetButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e8f5e8,
+                                stop:1 #c8e6c9);
+    border: 2px solid #66bb6a;
+    color: #2e7d32;
+    min-width: 60px;
+}
+
+SettingDialog QPushButton#browseSourceButton:hover, 
+SettingDialog QPushButton#browseTargetButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #c8e6c9,
+                                stop:1 #a5d6a7);
+    border: 2px solid #4caf50;
+    color: #1b5e20;
+}
+
+/* 设置页面输入框增强 */
+SettingDialog QLineEdit, SettingDialog QSpinBox, SettingDialog QDoubleSpinBox {
+    background: #ffffff;
+    color: #2c3e50;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    selection-background-color: #64b5f6;
+    selection-color: #ffffff;
+}
+
+SettingDialog QLineEdit:focus, SettingDialog QSpinBox:focus, SettingDialog QDoubleSpinBox:focus {
+    border: 2px solid #42a5f5;
+    background: #fafbfc;
+    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+}
+
+/* 设置页面下拉框增强 */
+SettingDialog QComboBox {
+    background: #ffffff;
+    color: #2c3e50;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 10px 12px;
+    padding-right: 35px; /* 为下拉箭头留出空间 */
+    font-size: 12px;
+    min-width: 120px;
+    min-height: 20px;
+}
+
+SettingDialog QComboBox:focus {
+    border: 2px solid #42a5f5;
+    background: #fafbfc;
+    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+}
+
+SettingDialog QComboBox:hover {
+    border: 2px solid #90caf9;
+    background: #f8f9fa;
+}
+
+SettingDialog QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border-left-width: 1px;
+    border-left-color: #e1e8ed;
+    border-left-style: solid;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:1 #f8f9fa);
+}
+
+SettingDialog QComboBox::drop-down:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #bbdefb);
+    border-left-color: #42a5f5;
+}
+
+SettingDialog QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #6c757d;
+    width: 0;
+    height: 0;
+}
+
+SettingDialog QComboBox::down-arrow:hover {
+    border-top: 6px solid #1976d2;
+}
+
+SettingDialog QComboBox QFrame {
+    background: transparent;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+SettingDialog QComboBox QAbstractItemView {
+    background: #ffffff;
+    border: 2px solid #42a5f5;
+    border-radius: 8px;
+    color: #2c3e50;
+    selection-background-color: #e3f2fd;
+    selection-color: #1565c0;
+    outline: none;
+    padding: 4px;
+    font-size: 12px;
+    margin: 0px;
+    alternate-background-color: transparent;
+    gridline-color: transparent;
+    show-decoration-selected: 1;
+}
+
+SettingDialog QComboBox QAbstractItemView::item {
+    height: 32px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin: 2px;
+    background: transparent;
+    border: none;
+}
+
+SettingDialog QComboBox QAbstractItemView::item:selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #e3f2fd,
+                                stop:1 #bbdefb);
+    color: #1565c0;
+    font-weight: 500;
+}
+
+SettingDialog QComboBox QAbstractItemView::item:hover {
+    background: #f1f8ff;
+    color: #1976d2;
+}
+
+/* 设置页面滑块增强 */
+SettingDialog QSlider::groove:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop:0 #e9ecef,
+                                stop:1 #f8f9fa);
+    height: 10px;
+    border-radius: 5px;
+    margin: 2px 0;
+    border: 1px solid #dee2e6;
+}
+
+SettingDialog QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:0.3 #42a5f5,
+                                stop:0.7 #1976d2,
+                                stop:1 #0d47a1);
+    border: 3px solid #ffffff;
+    width: 22px;
+    height: 22px;
+    border-radius: 13px;
+    margin: -8px 0;
+    box-shadow: 0 2px 6px rgba(66, 165, 245, 0.3);
+}
+
+SettingDialog QSlider::handle:horizontal:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #ffffff,
+                                stop:0.3 #64b5f6,
+                                stop:0.7 #42a5f5,
+                                stop:1 #1976d2);
+    box-shadow: 0 4px 8px rgba(66, 165, 245, 0.4);
+}
+
+SettingDialog QSlider::sub-page:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop:0 #42a5f5,
+                                stop:0.5 #2196f3,
+                                stop:1 #1976d2);
+    border-radius: 5px;
+    border: 1px solid #1976d2;
+}
+
+/* 设置页面复选框增强 */
+SettingDialog QCheckBox {
+    color: #2c3e50;
+    font-weight: 500;
+    spacing: 10px;
+    font-size: 12px;
+}
+
+SettingDialog QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ced4da;
+    border-radius: 5px;
+    background: #ffffff;
+}
+
+SettingDialog QCheckBox::indicator:hover {
+    border: 2px solid #42a5f5;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #f1f8ff,
+                                stop:1 #e3f2fd);
+}
+
+SettingDialog QCheckBox::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #42a5f5,
+                                stop:0.5 #2196f3,
+                                stop:1 #1976d2);
+    border: 2px solid #1976d2;
+}
+
+SettingDialog QCheckBox::indicator:checked:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #64b5f6,
+                                stop:0.5 #42a5f5,
+                                stop:1 #2196f3);
+    border: 2px solid #1565c0;
 }

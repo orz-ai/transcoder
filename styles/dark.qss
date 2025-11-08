@@ -71,16 +71,197 @@ QDateEdit, QTimeEdit, QDateTimeEdit {
     selection-color: #111;
 }
 
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, 
+QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 2px solid #3daee9;
+    background: #353a42;
+}
+
+/* SpinBox buttons */
+QSpinBox::up-button, QDoubleSpinBox::up-button {
+    background: #3a3f46;
+    border: 1px solid #4a4f56;
+    border-top-right-radius: 4px;
+    width: 18px;
+}
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+    background: #3a3f46;
+    border: 1px solid #4a4f56;
+    border-bottom-right-radius: 4px;
+    width: 18px;
+}
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 4px solid #e0e0e0;
+    width: 0; height: 0;
+}
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 4px solid #e0e0e0;
+    width: 0; height: 0;
+}
+
+/* Slider styles */
+QSlider::groove:horizontal {
+    background: #2f343b;
+    height: 6px;
+    border-radius: 3px;
+    margin: 2px 0;
+    border: 1px solid #4a4f56;
+}
+QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #3daee9,
+                                stop:1 #2196f3);
+    border: 2px solid #3daee9;
+    width: 16px;
+    height: 16px;
+    border-radius: 10px;
+    margin: -6px 0;
+}
+QSlider::handle:horizontal:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #5bbef0,
+                                stop:1 #42a5f5);
+}
+QSlider::sub-page:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                stop:0 #3daee9,
+                                stop:1 #2196f3);
+    border-radius: 3px;
+}
+
+/* Checkbox styles */
+QCheckBox {
+    color: #e0e0e0;
+    font-weight: 500;
+    spacing: 6px;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #4a4f56;
+    border-radius: 3px;
+    background: #2f343b;
+}
+QCheckBox::indicator:hover {
+    border: 2px solid #3daee9;
+    background: #353a42;
+}
+QCheckBox::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                stop:0 #3daee9,
+                                stop:1 #2196f3);
+    border: 2px solid #3daee9;
+}
+
 /* Combo box */
 QComboBox {
     background: #2f343b;
     color: #e0e0e0;
-    border: 1px solid #4a4f56;
-    border-radius: 4px;
-    padding: 4px;
+    border: 2px solid #4a4f56;
+    border-radius: 6px;
+    padding: 8px 12px;
+    padding-right: 30px; /* 为下拉箭头留出空间 */
+    min-width: 80px;
+    min-height: 18px;
 }
-QComboBox::drop-down { subcontrol-origin: padding; subcontrol-position: top right; width: 22px; border-left: 1px solid #4a4f56; }
-QComboBox::down-arrow { image: none; width: 0; height: 0; }
+
+QComboBox:hover {
+    border: 2px solid #3daee9;
+    background: #353a42;
+}
+
+QComboBox:focus {
+    border: 2px solid #3daee9;
+    background: #353a42;
+}
+
+QComboBox:on { /* 下拉框展开时 */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down { 
+    subcontrol-origin: padding; 
+    subcontrol-position: top right; 
+    width: 25px; 
+    border-left-width: 1px;
+    border-left-color: #4a4f56;
+    border-left-style: solid; 
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #3a3f46,
+                                stop:1 #2f343b);
+}
+
+QComboBox::drop-down:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #45505a,
+                                stop:1 #3a3f46);
+    border-left-color: #3daee9;
+}
+
+QComboBox::down-arrow { 
+    image: none; 
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #e0e0e0;
+    width: 0; 
+    height: 0; 
+}
+
+QComboBox::down-arrow:hover {
+    border-top: 5px solid #3daee9;
+}
+
+/* 下拉菜单样式 */
+/* 处理QComboBox弹出菜单的外层容器 */
+QComboBox QFrame {
+    background: transparent;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+QComboBox QAbstractItemView {
+    background: #2f343b;
+    border: 2px solid #3daee9;
+    border-radius: 6px;
+    color: #e0e0e0;
+    selection-background-color: #3a4a55;
+    selection-color: #3daee9;
+    outline: none;
+    padding: 2px;
+    margin: 0px;
+    alternate-background-color: transparent;
+    gridline-color: transparent;
+    show-decoration-selected: 1;
+}
+
+QComboBox QAbstractItemView::item {
+    height: 28px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin: 1px;
+    background: transparent;
+    border: none;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #45505a,
+                                stop:1 #3a4a55);
+    color: #3daee9;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background: #3a3f46;
+    color: #3daee9;
+}
 
 /* Groups & Tabs */
 QGroupBox { border: 1px solid #4a4f56; border-radius: 6px; margin-top: 12px; }
@@ -144,4 +325,186 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; bac
                                       stop:0 #0f2027,
                                       stop:0.5 #203a43,
                                       stop:1 #2c5364);
+}
+
+/* Settings Dialog Dark Theme Styles */
+SettingDialog {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #2b2b2b,
+                                stop:1 #1e1e1e);
+}
+
+SettingDialog QGroupBox {
+    border: 2px solid #4a4f56;
+    border-radius: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    background: rgba(47, 52, 59, 0.8);
+    font-weight: 500;
+}
+
+SettingDialog QGroupBox::title {
+    color: #3daee9;
+    font-weight: 600;
+    padding: 4px 12px;
+    background: #2f343b;
+    border: 1px solid #3daee9;
+    border-radius: 6px;
+    margin-left: 6px;
+}
+
+SettingDialog QTabWidget::pane {
+    border: 2px solid #4a4f56;
+    border-radius: 8px;
+    background: #2b2b2b;
+    padding: 6px;
+}
+
+SettingDialog QTabBar::tab {
+    background: #2f343b;
+    color: #dcdcdc;
+    padding: 10px 16px;
+    border: 1px solid #4a4f56;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-right: 2px;
+    font-weight: 600;
+}
+
+SettingDialog QTabBar::tab:selected {
+    background: #3a3f46;
+    color: #3daee9;
+    border: 2px solid #3daee9;
+    border-bottom: none;
+}
+
+SettingDialog QPushButton {
+    background: #3a3f46;
+    color: #e8e8e8;
+    border: 1px solid #4a4f56;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+}
+
+SettingDialog QPushButton:hover {
+    background: #45505a;
+    border: 1px solid #3daee9;
+    color: #3daee9;
+}
+
+SettingDialog QPushButton#resetButton {
+    background: #5d4e37;
+    border: 1px solid #8b7355;
+    color: #ffd700;
+}
+
+SettingDialog QPushButton#resetButton:hover {
+    background: #6d5e47;
+    border: 1px solid #daa520;
+}
+
+SettingDialog QLineEdit, SettingDialog QSpinBox, SettingDialog QComboBox {
+    background: #2f343b;
+    color: #e0e0e0;
+    border: 2px solid #4a4f56;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+SettingDialog QComboBox {
+    padding-right: 30px; /* 为下拉箭头留出空间 */
+    min-width: 120px;
+    min-height: 18px;
+}
+
+SettingDialog QLineEdit:focus, SettingDialog QSpinBox:focus, SettingDialog QComboBox:focus {
+    border: 2px solid #3daee9;
+    background: #353a42;
+}
+
+SettingDialog QComboBox:hover {
+    border: 2px solid #3daee9;
+    background: #353a42;
+}
+
+SettingDialog QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 25px;
+    border-left-width: 1px;
+    border-left-color: #4a4f56;
+    border-left-style: solid;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #3a3f46,
+                                stop:1 #2f343b);
+}
+
+SettingDialog QComboBox::drop-down:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #45505a,
+                                stop:1 #3a3f46);
+    border-left-color: #3daee9;
+}
+
+SettingDialog QComboBox::down-arrow {
+    image: none;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #e0e0e0;
+    width: 0;
+    height: 0;
+}
+
+SettingDialog QComboBox::down-arrow:hover {
+    border-top: 5px solid #3daee9;
+}
+
+SettingDialog QComboBox QFrame {
+    background: transparent;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+SettingDialog QComboBox QAbstractItemView {
+    background: #2f343b;
+    border: 2px solid #3daee9;
+    border-radius: 6px;
+    color: #e0e0e0;
+    selection-background-color: #3a4a55;
+    selection-color: #3daee9;
+    outline: none;
+    padding: 2px;
+    font-size: 12px;
+    margin: 0px;
+    alternate-background-color: transparent;
+    gridline-color: transparent;
+    show-decoration-selected: 1;
+}
+
+SettingDialog QComboBox QAbstractItemView::item {
+    height: 30px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    margin: 1px;
+    background: transparent;
+    border: none;
+}
+
+SettingDialog QComboBox QAbstractItemView::item:selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #45505a,
+                                stop:1 #3a4a55);
+    color: #3daee9;
+    font-weight: 500;
+}
+
+SettingDialog QComboBox QAbstractItemView::item:hover {
+    background: #3a3f46;
+    color: #3daee9;
 }

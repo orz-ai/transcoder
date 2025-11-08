@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    configmanager.cpp \
     main.cpp \
     renamedialog.cpp \
     selecteddirsdialog.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     utils/httpclient.cpp
 
 HEADERS += \
+    configmanager.h \
     renamedialog.h \
     selecteddirsdialog.h \
     settingdialog.h \
