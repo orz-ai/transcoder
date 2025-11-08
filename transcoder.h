@@ -10,7 +10,10 @@
 #include "transcodeworker.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Transcoder; }
+namespace Ui
+{
+    class Transcoder;
+}
 QT_END_NAMESPACE
 
 class Transcoder : public QMainWindow
@@ -29,6 +32,10 @@ public slots:
     void selectTargetDir();
     void updateProgress(int value);
     void onTranscodeFinished();
+    void switchToModernTheme();
+    void switchToDarkTheme();
+    void showSelectedDirsDialog();
+    void showSettingsDialog();
 
 private:
     Ui::Transcoder *ui;
@@ -36,6 +43,7 @@ private:
     QStringList validatePaths(const QStringList &paths);
     bool isValidFile(const QFileInfo &file);
     QString buildTranscodeCommand(QString srcPath, QString targetPath);
+    void applyTheme(const QString &themePath);
 
     TranscodeWorker *worker;
     QStringList selecedPaths;

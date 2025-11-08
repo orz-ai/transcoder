@@ -68,7 +68,7 @@
         <property name="maximumSize">
          <size>
           <width>100</width>
-          <height>16777215</height>
+          <height>30</height>
          </size>
         </property>
         <property name="text">
@@ -78,6 +78,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="checkSelectedBtn">
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="text">
          <string>查看选择目录</string>
         </property>
@@ -101,7 +107,7 @@
         <property name="maximumSize">
          <size>
           <width>100</width>
-          <height>16777215</height>
+          <height>30</height>
          </size>
         </property>
         <property name="text">
@@ -168,26 +174,44 @@
     <property name="title">
      <string>文件</string>
     </property>
-    <addaction name="action"/>
+    <addaction name="action_settings"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>关于</string>
     </property>
-    <addaction name="action_2"/>
+    <addaction name="action_about"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>主题</string>
+    </property>
+    <addaction name="action_modern_theme"/>
+    <addaction name="action_dark_theme"/>
    </widget>
    <addaction name="menu"/>
+   <addaction name="menu_3"/>
    <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
-   <property name="text">
-    <string>打开</string>
-   </property>
-  </action>
-  <action name="action_2">
+  <action name="action_about">
    <property name="text">
     <string>关于软件</string>
+   </property>
+  </action>
+  <action name="action_modern_theme">
+   <property name="text">
+    <string>现代主题</string>
+   </property>
+  </action>
+  <action name="action_dark_theme">
+   <property name="text">
+    <string>深色主题</string>
+   </property>
+  </action>
+  <action name="action_settings">
+   <property name="text">
+    <string>设置</string>
    </property>
   </action>
  </widget>

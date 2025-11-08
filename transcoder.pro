@@ -11,18 +11,24 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     renamedialog.cpp \
+    selecteddirsdialog.cpp \
+    settingdialog.cpp \
     transcoder.cpp \
     transcodeworker.cpp \
     utils/httpclient.cpp
 
 HEADERS += \
     renamedialog.h \
+    selecteddirsdialog.h \
+    settingdialog.h \
     transcoder.h \
     transcodeworker.h \
     utils/httpclient.h
 
 FORMS += \
     renamedialog.ui \
+    selecteddirsdialog.ui \
+    settingdialog.ui \
     transcoder.ui
 
 RESOURCES += \

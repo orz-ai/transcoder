@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/styles">
     <file alias="dark.qss">styles/dark.qss</file>
+    <file alias="modern.qss">styles/modern.qss</file>
   </qresource>
 </RCC>

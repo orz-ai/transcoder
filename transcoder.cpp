@@ -2,17 +2,19 @@
 #include "transcoder.h"
 #include "ui_transcoder.h"
 #include <RenameDialog.h>
+#include <selecteddirsdialog.h>
+#include <settingdialog.h>
 #include <qdebug.h>
 #include <utils/HttpClient.h>
 #include <QMessageBox>
-
+#include <QApplication>
+#include <QFile>
+#include <QShortcut>
 
 Transcoder::Transcoder(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::Transcoder)
+    : QMainWindow(parent), ui(new Ui::Transcoder)
 {
     ui->setupUi(this);
-
 
     ui->progressLayout->hide();
     ui->progressBar->setValue(0);
@@ -24,8 +26,16 @@ Transcoder::Transcoder(QWidget *parent)
     connect(ui->sourceDirBtn, &QPushButton::clicked, this, &Transcoder::selectSourceDirs);
     // 选择转码结果保存目录
     connect(ui->targetDirButton, &QPushButton::clicked, this, &Transcoder::selectTargetDir);
+    // 查看选中的目录
+    connect(ui->checkSelectedBtn, &QPushButton::clicked, this, &Transcoder::showSelectedDirsDialog);
+    connect(ui->action_settings, &QAction::triggered, this, &Transcoder::showSettingsDialog);
 
 
+    // 临时添加快捷键支持主题切换
+    QShortcut *modernThemeShortcut = new QShortcut(QKeySequence("Ctrl+1"), this);
+    QShortcut *darkThemeShortcut = new QShortcut(QKeySequence("Ctrl+2"), this);
+    connect(modernThemeShortcut, &QShortcut::activated, this, &Transcoder::switchToModernTheme);
+    connect(darkThemeShortcut, &QShortcut::activated, this, &Transcoder::switchToDarkTheme);
 }
 
 Transcoder::~Transcoder()
@@ -39,15 +49,15 @@ void Transcoder::renameFile()
     Qt::WindowFlags flags = dialog->windowFlags();
     dialog->setWindowFlags(flags | Qt::MSWindowsFixedSizeDialogHint);
 
-//    QString item = ui->lineEdit->text();
-//    ptr->SetValue(item);
+    //    QString item = ui->lineEdit->text();
+    //    ptr->SetValue(item);
 
     int ref = dialog->exec();
-    if (ref==QDialog::Accepted)
+    if (ref == QDialog::Accepted)
     {
-//        QString the_value = ptr->GetValue();
-//        std::cout << "value = " << the_value.toStdString().data() << std::endl;
-//        ui->lineEdit->setText(the_value);
+        //        QString the_value = ptr->GetValue();
+        //        std::cout << "value = " << the_value.toStdString().data() << std::endl;
+        //        ui->lineEdit->setText(the_value);
     }
 
     delete dialog;
@@ -55,34 +65,12 @@ void Transcoder::renameFile()
 
 void Transcoder::startTranscode()
 {
-//    HttpClient client;
-//    QString response = client.get("https://orz.ai/dailynews/?platform=baidu");
-//    qDebug() << "Response:" << response;
-    QFileDialog dialog(nullptr, QString::fromLocal8Bit("select dirs or files"));
-    dialog.setFileMode(QFileDialog::Directory);
-    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
-    dialog.setDirectory(QDir::homePath());
-
-    QListView *listView = dialog.findChild<QListView*>("listView");
-    if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
-    QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
-    if (treeView) treeView->setSelectionMode(QAbstractItemView::MultiSelection);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        QStringList selectedPaths = dialog.selectedFiles();
-        qDebug() << "selected paths: " << selectedPaths;
-
-        // check dirs and files
-        QStringList validFiles = validatePaths(selectedPaths);
-        if (validFiles.isEmpty()) {
-            QMessageBox::warning(nullptr, QString::fromLocal8Bit("ERROR"), QString::fromLocal8Bit("no effect files!"));
-            return;
-        }
-
-
-        transcoding(validFiles);
+    if (this->selecedPaths.length() == 0) {
+        QMessageBox::warning(nullptr, QString::fromLocal8Bit("错误"), QString::fromLocal8Bit("请先选择转码目录！"));
+		return;
     }
 
+    transcoding(this->selecedPaths);
 }
 
 void Transcoder::selectSourceDirs()
@@ -93,17 +81,21 @@ void Transcoder::selectSourceDirs()
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
     dialog.setDirectory(QDir::homePath());
 
-    QListView *listView = dialog.findChild<QListView*>("listView");
-    if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
-    QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
-    if (treeView) treeView->setSelectionMode(QAbstractItemView::MultiSelection);
+    QListView *listView = dialog.findChild<QListView *>("listView");
+    if (listView)
+        listView->setSelectionMode(QAbstractItemView::MultiSelection);
+    QTreeView *treeView = dialog.findChild<QTreeView *>("treeView");
+    if (treeView)
+        treeView->setSelectionMode(QAbstractItemView::MultiSelection);
 
-    if (dialog.exec() == QDialog::Accepted) {
+    if (dialog.exec() == QDialog::Accepted)
+    {
         QStringList selectedPaths = dialog.selectedFiles();
         qDebug() << "选择了：" << selectedPaths;
 
         QStringList validFiles = validatePaths(selectedPaths);
-        if (validFiles.isEmpty()) {
+        if (validFiles.isEmpty())
+        {
             QMessageBox::warning(nullptr, QString::fromLocal8Bit("错误"), QString::fromLocal8Bit("没有检测到视频文件！"));
             return;
         }
@@ -119,12 +111,15 @@ void Transcoder::selectTargetDir()
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
     dialog.setDirectory(QDir::homePath());
 
-    QListView *listView = dialog.findChild<QListView*>("listView");
-    if (listView) listView->setSelectionMode(QAbstractItemView::MultiSelection);
-    QTreeView *treeView = dialog.findChild<QTreeView*>("treeView");
-    if (treeView) treeView->setSelectionMode(QAbstractItemView::MultiSelection);
+    QListView *listView = dialog.findChild<QListView *>("listView");
+    if (listView)
+        listView->setSelectionMode(QAbstractItemView::MultiSelection);
+    QTreeView *treeView = dialog.findChild<QTreeView *>("treeView");
+    if (treeView)
+        treeView->setSelectionMode(QAbstractItemView::MultiSelection);
 
-    if (dialog.exec() == QDialog::Accepted) {
+    if (dialog.exec() == QDialog::Accepted)
+    {
         QStringList selectedPaths = dialog.selectedFiles();
         this->targetPath = selectedPaths.first();
     }
@@ -145,7 +140,8 @@ void Transcoder::transcoding(const QStringList &files)
     QMessageBox::information(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("转码任务已开始！"));
 }
 
-bool Transcoder::isValidFile(const QFileInfo &fileInfo) {
+bool Transcoder::isValidFile(const QFileInfo &fileInfo)
+{
     QStringList supportedExtensions = {"mp4", "mkv", "avi", "mov"};
     return supportedExtensions.contains(fileInfo.suffix().toLower());
 }
@@ -153,45 +149,95 @@ bool Transcoder::isValidFile(const QFileInfo &fileInfo) {
 QStringList Transcoder::validatePaths(const QStringList &paths)
 {
     QStringList validFiles;
-    for (const QString &path : paths) {
+    for (const QString &path : paths)
+    {
         QFileInfo info(path);
 
-        if (info.isDir()) {
+        if (info.isDir())
+        {
 
             QDir dir(path);
-            if (dir.isEmpty()) {
+            if (dir.isEmpty())
+            {
                 qDebug() << "skip empty dir." << path;
                 continue;
             }
             validFiles.append(path);
-        } else if (info.isFile()) {
+        }
+        else if (info.isFile())
+        {
 
-            if (isValidFile(info)) {
+            if (isValidFile(info))
+            {
                 validFiles.append(path);
-            } else {
+            }
+            else
+            {
                 qDebug() << "invalid file: " << path;
             }
-        } else {
+        }
+        else
+        {
             qDebug() << "unknown dir." << path;
         }
     }
     return validFiles;
 }
 
-QString Transcoder::buildTranscodeCommand(QString srcPath, QString targetPath) {
+QString Transcoder::buildTranscodeCommand(QString srcPath, QString targetPath)
+{
     QString cmd = QString("ffmpeg -i %1 -c:v libx264 -s 720x1280 -r 30 -crf %2 -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv -movflags faststart -profile:v high %3")
-        .arg(srcPath)
-        .arg(23)  // CRF 值
-        .arg(targetPath);
+                      .arg(srcPath)
+                      .arg(23) // CRF 值
+                      .arg(targetPath);
 
     return cmd;
 }
 
-void Transcoder::updateProgress(int value) {
+
+/**
+ * 显示当前选中的所有目录
+ */
+void Transcoder::showSelectedDirsDialog()
+{
+    SelectedDirsDialog *dialog = new SelectedDirsDialog();
+    Qt::WindowFlags flags = dialog->windowFlags();
+    dialog->setWindowFlags(flags | Qt::MSWindowsFixedSizeDialogHint);
+
+    dialog->setSelectedDirsListView(this->selecedPaths);
+
+    int ref = dialog->exec();
+    if (ref == QDialog::Accepted)
+    {
+
+    }
+
+    delete dialog;
+    return;
+}
+
+void Transcoder::showSettingsDialog()
+{
+    SettingDialog *dialog = new SettingDialog;
+    Qt::WindowFlags flags = dialog->windowFlags();
+    dialog->setWindowFlags(flags);
+    int ref = dialog->exec();
+    if (ref == QDialog::Accepted)
+    {
+
+    }
+
+    delete dialog;
+    return;
+}
+
+void Transcoder::updateProgress(int value)
+{
     ui->progressBar->setValue(value);
 }
 
-void Transcoder::onTranscodeFinished() {
+void Transcoder::onTranscodeFinished()
+{
 
     ui->transcodeBtn->setEnabled(true);
     worker->deleteLater();
@@ -200,4 +246,22 @@ void Transcoder::onTranscodeFinished() {
     QMessageBox::information(this, QString::fromLocal8Bit("成功"), QString::fromLocal8Bit("所有视频文件转码成功！"));
 }
 
+void Transcoder::switchToModernTheme()
+{
+    applyTheme(":/styles/modern.qss");
+}
 
+void Transcoder::switchToDarkTheme()
+{
+    applyTheme(":/styles/dark.qss");
+}
+
+void Transcoder::applyTheme(const QString &themePath)
+{
+    QFile qss(themePath);
+    if (qss.open(QFile::ReadOnly | QFile::Text))
+    {
+        qApp->setStyleSheet(QString::fromUtf8(qss.readAll()));
+        qss.close();
+    }
+}
