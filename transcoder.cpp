@@ -128,6 +128,20 @@ void Transcoder::selectTargetDir()
 void Transcoder::transcoding(const QStringList &files)
 {
     qDebug() << "start transcoding files: " << files;
+
+    // check source dirs and target dir
+    if (this->selecedPaths.length() == 0)
+    {
+        QMessageBox::warning(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("未选择转码目录！"));
+        return;
+    }
+
+    if (this->targetPath == "")
+    {
+        QMessageBox::warning(nullptr, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("未选择转码后文件存放目录!"));
+        return ;
+    }
+
     worker = new TranscodeWorker(files, this);
     ui->progressBar->setValue(0);
     ui->transcodeBtn->setEnabled(false);

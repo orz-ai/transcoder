@@ -40,8 +40,17 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
      <property name="currentIndex">
       <number>0</number>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideMiddle</enum>
      </property>
      <widget class="QWidget" name="transcodeSettingTab">
       <attribute name="title">

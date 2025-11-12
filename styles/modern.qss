@@ -21,8 +21,8 @@ QWidget {
 }
 
 /* 标签 */
-QLabel { 
-    color: #34495e; 
+QLabel {
+    color: #34495e;
     font-weight: 500;
 }
 
@@ -36,15 +36,15 @@ QMenuBar {
     padding: 2px;
 }
 
-QMenuBar::item { 
+QMenuBar::item {
     padding: 8px 16px;
-    background: transparent; 
+    background: transparent;
     color: #2c3e50;
     border-radius: 6px;
     margin: 2px;
 }
 
-QMenuBar::item:selected { 
+QMenuBar::item:selected {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #e3f2fd,
                                 stop:1 #bbdefb);
@@ -143,7 +143,7 @@ QDateEdit, QTimeEdit, QDateTimeEdit {
     min-height: 16px;
 }
 
-QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, 
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus,
 QSpinBox:focus, QDoubleSpinBox:focus {
     border: 2px solid #42a5f5;
     background: #fafbfc;
@@ -441,10 +441,7 @@ QGroupBox::title {
 
 /* 选项卡 */
 QTabWidget::pane {
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    background: #ffffff;
-    padding: 4px;
+    border: 1px solid #e9ecef;
 }
 
 QTabBar::tab {
@@ -459,12 +456,14 @@ QTabBar::tab {
     border-top-right-radius: 8px;
     margin-right: 2px;
     font-weight: 500;
+    min-width: 60px;
+    min-height: 20px;
 }
 
 QTabBar::tab:selected {
     background: #ffffff;
     color: #495057;
-    border-bottom: 2px solid #42a5f5;
+
 }
 
 QTabBar::tab:hover:!selected {
@@ -654,7 +653,7 @@ SettingDialog QLabel {
 /* 设置页面选项卡增强 */
 SettingDialog QTabWidget::pane {
 
-    border-radius: 12px;
+
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #ffffff,
                                 stop:1 #f8fafb);
@@ -665,11 +664,16 @@ SettingDialog QTabBar::tab {
                                 stop:0 #f8f9fa,
                                 stop:1 #e9ecef);
     color: #6c757d;
+    padding: 12px 20px;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin-right: 3px;
     font-weight: 600;
     font-size: 13px;
+    min-width: 80px;
+    min-height: 25px;
 }
 
 SettingDialog QTabBar::tab:selected {
@@ -677,6 +681,9 @@ SettingDialog QTabBar::tab:selected {
                                 stop:0 #ffffff,
                                 stop:1 #f1f8ff);
     color: #1976d2;
+    border: 2px solid #42a5f5;
+    border-bottom: none;
+    margin-top: -1px;
 }
 
 SettingDialog QTabBar::tab:hover:!selected {
@@ -737,7 +744,7 @@ SettingDialog QPushButton#resetButton:hover {
 }
 
 /* 路径浏览按钮样式 */
-SettingDialog QPushButton#browseSourceButton, 
+SettingDialog QPushButton#browseSourceButton,
 SettingDialog QPushButton#browseTargetButton {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #e8f5e8,
@@ -747,7 +754,7 @@ SettingDialog QPushButton#browseTargetButton {
     min-width: 60px;
 }
 
-SettingDialog QPushButton#browseSourceButton:hover, 
+SettingDialog QPushButton#browseSourceButton:hover,
 SettingDialog QPushButton#browseTargetButton:hover {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                 stop:0 #c8e6c9,
