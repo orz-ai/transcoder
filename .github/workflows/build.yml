@@ -60,9 +60,12 @@ jobs:
         
     - name: Copy additional resources
       run: |
-        mkdir deploy\styles
-        copy styles\*.qss deploy\styles\
-        if (Test-Path utils) { mkdir deploy\utils; copy utils\*.* deploy\utils\ }
+        New-Item -ItemType Directory -Path deploy\styles -Force
+        Copy-Item styles\*.qss deploy\styles\ -Force
+        if (Test-Path utils) { 
+          New-Item -ItemType Directory -Path deploy\utils -Force
+          Copy-Item utils\*.* deploy\utils\ -Force
+        }
         
     - name: Create portable package
       run: |
