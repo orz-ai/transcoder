@@ -62,7 +62,7 @@ jobs:
       run: |
         mkdir deploy\styles
         copy styles\*.qss deploy\styles\
-        if exist utils (mkdir deploy\utils & copy utils\*.* deploy\utils\)
+        if (Test-Path utils) { mkdir deploy\utils; copy utils\*.* deploy\utils\ }
         
     - name: Create portable package
       run: |
