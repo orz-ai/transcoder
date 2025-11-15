@@ -1,4 +1,4 @@
-#include "configmanager.h"
+﻿#include "configmanager.h"
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFile>
@@ -119,6 +119,7 @@ bool ConfigManager::saveConfig()
 void ConfigManager::setTranscodeSettings(const TranscodeSettings &settings)
 {
     m_transcodeSettings = settings;
+    saveConfig(); // 保存到文件
     emit transcodeSettingsChanged();
     emit configChanged();
 }
@@ -126,6 +127,7 @@ void ConfigManager::setTranscodeSettings(const TranscodeSettings &settings)
 void ConfigManager::setSystemSettings(const SystemSettings &settings)
 {
     m_systemSettings = settings;
+    saveConfig();
     emit systemSettingsChanged();
     emit configChanged();
 }
@@ -142,7 +144,6 @@ QJsonObject ConfigManager::transcodeSettingsToJson() const
     json["colorspace"] = m_transcodeSettings.colorspace;
     json["faststart"] = m_transcodeSettings.faststart;
     json["profile"] = m_transcodeSettings.profile;
-    json["threads"] = m_transcodeSettings.threads;
     return json;
 }
 
@@ -156,7 +157,7 @@ QJsonObject ConfigManager::systemSettingsToJson() const
     json["defaultTargetPath"] = m_systemSettings.defaultTargetPath;
     json["showNotifications"] = m_systemSettings.showNotifications;
     json["autoStart"] = m_systemSettings.autoStart;
-    json["maxConcurrentJobs"] = m_systemSettings.maxConcurrentJobs;
+    json["threadCount"] = m_systemSettings.threadCount;
     return json;
 }
 
@@ -180,8 +181,6 @@ void ConfigManager::transcodeSettingsFromJson(const QJsonObject &json)
         m_transcodeSettings.faststart = json["faststart"].toBool();
     if (json.contains("profile"))
         m_transcodeSettings.profile = json["profile"].toString();
-    if (json.contains("threads"))
-        m_transcodeSettings.threads = json["threads"].toInt();
 }
 
 void ConfigManager::systemSettingsFromJson(const QJsonObject &json)
@@ -200,6 +199,6 @@ void ConfigManager::systemSettingsFromJson(const QJsonObject &json)
         m_systemSettings.showNotifications = json["showNotifications"].toBool();
     if (json.contains("autoStart"))
         m_systemSettings.autoStart = json["autoStart"].toBool();
-    if (json.contains("maxConcurrentJobs"))
-        m_systemSettings.maxConcurrentJobs = json["maxConcurrentJobs"].toInt();
+    if (json.contains("threadCount"))
+        m_systemSettings.threadCount = json["threadCount"].toInt();
 }

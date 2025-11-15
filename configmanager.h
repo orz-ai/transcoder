@@ -20,7 +20,6 @@ struct TranscodeSettings
     QString colorspace = "bt709";    // 色彩空间
     bool faststart = true;           // 快速启动
     QString profile = "high";        // 编码档次
-    int threads = 0;                 // 线程数(0=自动)
 };
 
 struct SystemSettings
@@ -32,7 +31,7 @@ struct SystemSettings
     QString defaultTargetPath = ""; // 默认输出目录
     bool showNotifications = true;  // 显示通知
     bool autoStart = false;         // 开机自启
-    int maxConcurrentJobs = 2;      // 最大并发任务数
+    int threadCount = 0;            // 线程数（0=自动检测）
 };
 
 class ConfigManager : public QObject

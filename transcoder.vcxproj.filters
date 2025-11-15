@@ -50,6 +50,9 @@
     <ClCompile Include="configmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\ffmpegutils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="utils\httpclient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,6 +79,9 @@
     <CustomBuild Include="configmanager.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <ClInclude Include="utils\ffmpegutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="utils\httpclient.h">
       <Filter>Header Files</Filter>
     </ClInclude>

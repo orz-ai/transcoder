@@ -8,8 +8,17 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMap>
-#include <functional> // 用于回调函数
+#include <functional>
 
+/**
+ * @brief The HttpClient class
+ *
+ *  Usage:
+ *
+ *  HttpClient client;
+ *  QString response = client.get("https://orz.ai/dailynews/?platform=baidu");
+ *  qDebug() << "Response:" << response;
+ */
 class HttpClient {
 public:
     explicit HttpClient();

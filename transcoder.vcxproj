@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="configmanager.cpp" />
+    <ClCompile Include="utils\ffmpegutils.cpp" />
     <ClCompile Include="utils\httpclient.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="renamedialog.cpp" />
@@ -158,6 +159,7 @@
       <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC configmanager.h</Message>
       <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_configmanager.cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <ClInclude Include="utils\ffmpegutils.h" />
     <ClInclude Include="utils\httpclient.h" />
     <CustomBuild Include="renamedialog.h">
       <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">renamedialog.h;release\moc_predefs.h;D:\Qt\5.15.2\msvc2019_64\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>

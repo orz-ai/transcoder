@@ -34,6 +34,9 @@ private:
     void resetToDefaults();
     void connectSignals();
     void applyTheme(const QString &theme);
+    void initThreadCountComboBox();
+    void setThreadCountToUI(int threadCount);
+    int getOptimalThreadCount() const;
 
     TranscodeSettings getTranscodeSettingsFromUI() const;
     SystemSettings getSystemSettingsFromUI() const;

@@ -47,7 +47,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideMiddle</enum>
@@ -541,6 +541,9 @@
               </item>
               <item row="0" column="1">
                <layout class="QHBoxLayout" name="sourcePathLayout">
+                <property name="spacing">
+                 <number>20</number>
+                </property>
                 <item>
                  <widget class="QLineEdit" name="defaultSourceLineEdit">
                   <property name="placeholderText">
@@ -572,6 +575,9 @@
               </item>
               <item row="1" column="1">
                <layout class="QHBoxLayout" name="targetPathLayout">
+                <property name="spacing">
+                 <number>20</number>
+                </property>
                 <item>
                  <widget class="QLineEdit" name="defaultTargetLineEdit">
                   <property name="placeholderText">
@@ -609,36 +615,6 @@
               <property name="verticalSpacing">
                <number>12</number>
               </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="maxJobsLabel">
-                <property name="text">
-                 <string>最大并发任务数:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QSpinBox" name="maxJobsSpinBox">
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <number>8</number>
-                </property>
-                <property name="value">
-                 <number>2</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="2">
-               <widget class="QCheckBox" name="autoSaveProgressCheckBox">
-                <property name="text">
-                 <string>自动保存转码进度</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="0" colspan="2">
                <widget class="QCheckBox" name="showNotificationsCheckBox">
                 <property name="text">
@@ -649,6 +625,46 @@
                 </property>
                </widget>
               </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="threadCountComboBox">
+                <property name="toolTip">
+                 <string>选择同时转码的视频文件数量，自动为CPU核数-1</string>
+                </property>
+                <property name="currentText">
+                 <string>自动</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>自动</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>1线程</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>2线程</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>4线程</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>8线程</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>16线程</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
               <item row="3" column="0" colspan="2">
                <widget class="QCheckBox" name="autoStartCheckBox">
                 <property name="text">
@@ -656,6 +672,23 @@
                 </property>
                 <property name="checked">
                  <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="threadCountLabel">
+                <property name="text">
+                 <string>并发转码数:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <widget class="QCheckBox" name="autoSaveProgressCheckBox">
+                <property name="text">
+                 <string>自动保存转码进度</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>

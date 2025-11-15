@@ -7,7 +7,7 @@
 #include <QFileInfo>
 #include <QListView>
 #include <QTreeView>
-#include "transcodeworker.h"
+#include "transcodetaskmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -22,6 +22,8 @@ class Transcoder : public QMainWindow
     Q_OBJECT
 
 public:
+    const QStringList supportedExtensions = {"mp4", "mkv", "avi", "mov"};
+
     Transcoder(QWidget *parent = nullptr);
     ~Transcoder();
 
@@ -32,6 +34,9 @@ public slots:
     void selectTargetDir();
     void updateProgress(int value);
     void onTranscodeFinished();
+    void onCurrentFileChanged(const QString &fileName);
+    void onFileProcessed(const QString &fileName, bool success);
+    void onTranscodeError(const QString &errorMessage);
     void switchToModernTheme();
     void switchToDarkTheme();
     void showSelectedDirsDialog();
@@ -39,14 +44,12 @@ public slots:
 
 private:
     Ui::Transcoder *ui;
-    void transcoding(const QStringList &files);
-    QStringList validatePaths(const QStringList &paths);
-    bool isValidFile(const QFileInfo &file);
-    QString buildTranscodeCommand(QString srcPath, QString targetPath);
+    QMap<QString, QStringList> validatePaths(const QStringList &paths);
     void applyTheme(const QString &themePath);
 
-    TranscodeWorker *worker;
-    QStringList selecedPaths;
+    TranscodeTaskManager *worker;
+    QThread *workerThread;
+    QMap<QString, QStringList> selectedPaths;
     QString targetPath;
 };
 

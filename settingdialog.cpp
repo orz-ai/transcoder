@@ -5,11 +5,13 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QFile>
+#include <QThread>
 
 SettingDialog::SettingDialog(QWidget *parent) : QDialog(parent),
                                                 ui(new Ui::SettingDialog)
 {
     ui->setupUi(this);
+    initThreadCountComboBox();
     connectSignals();
     loadSettings();
 }
@@ -36,24 +38,18 @@ void SettingDialog::loadSettings()
 {
     ConfigManager *config = ConfigManager::instance();
 
-    // 加载转码设置
     setTranscodeSettingsToUI(config->getTranscodeSettings());
-
-    // 加载系统设置
     setSystemSettingsToUI(config->getSystemSettings());
+
+//    ui->languageComboBox->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+//    ui->languageComboBox->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 void SettingDialog::saveSettings()
 {
     ConfigManager *config = ConfigManager::instance();
-
-    // 保存转码设置
     config->setTranscodeSettings(getTranscodeSettingsFromUI());
-
-    // 保存系统设置
     config->setSystemSettings(getSystemSettingsFromUI());
-
-    // 保存到文件
     if (config->saveConfig())
     {
         QMessageBox::information(this, QString::fromLocal8Bit("设置"), QString::fromLocal8Bit("设置已保存成功！"));
@@ -173,9 +169,6 @@ TranscodeSettings SettingDialog::getTranscodeSettingsFromUI() const
     else if (profileText.contains("baseline"))
         settings.profile = "baseline";
 
-    // 线程数
-    settings.threads = ui->threadsSpinBox->value();
-
     // 快速启动
     settings.faststart = ui->faststartCheckBox->isChecked();
 
@@ -197,10 +190,26 @@ SystemSettings SettingDialog::getSystemSettingsFromUI() const
     settings.defaultTargetPath = ui->defaultTargetLineEdit->text();
 
     // 任务设置
-    settings.maxConcurrentJobs = ui->maxJobsSpinBox->value();
     settings.autoSaveProgress = ui->autoSaveProgressCheckBox->isChecked();
     settings.showNotifications = ui->showNotificationsCheckBox->isChecked();
     settings.autoStart = ui->autoStartCheckBox->isChecked();
+
+    // 线程数设置
+    int threadIndex = ui->threadCountComboBox->currentIndex();
+    qDebug() << "Thread count combo box index:" << threadIndex;
+    if (threadIndex == 0)
+    {
+        settings.threadCount = 0; // 自动检测
+    }
+    else
+    {
+        QString threadText = ui->threadCountComboBox->currentText();
+        qDebug() << "Thread count text:" << threadText;
+        settings.threadCount = threadText.left(threadText.indexOf(QString::fromLocal8Bit("线程"))).toInt();
+        qDebug() << "Parsed thread count:" << threadText.left(threadText.indexOf("线程"));
+    }
+
+    qDebug() << "Selected thread count:" << settings.threadCount;
 
     return settings;
 }
@@ -304,9 +313,6 @@ void SettingDialog::setTranscodeSettingsToUI(const TranscodeSettings &settings)
         ui->profileComboBox->setCurrentIndex(2);
     }
 
-    // 线程数
-    ui->threadsSpinBox->setValue(settings.threads);
-
     // 快速启动
     ui->faststartCheckBox->setChecked(settings.faststart);
 }
@@ -323,17 +329,18 @@ void SettingDialog::setSystemSettingsToUI(const SystemSettings &settings)
     ui->defaultSourceLineEdit->setText(settings.defaultSourcePath);
     ui->defaultTargetLineEdit->setText(settings.defaultTargetPath);
 
-    // 任务设置
-    ui->maxJobsSpinBox->setValue(settings.maxConcurrentJobs);
     ui->autoSaveProgressCheckBox->setChecked(settings.autoSaveProgress);
     ui->showNotificationsCheckBox->setChecked(settings.showNotifications);
     ui->autoStartCheckBox->setChecked(settings.autoStart);
+
+    // 线程数设置
+    setThreadCountToUI(settings.threadCount);
 }
 
 void SettingDialog::onResetButtonClicked()
 {
-    int ret = QMessageBox::question(this, "确认重置",
-                                    "确定要恢复所有设置为默认值吗？",
+    int ret = QMessageBox::question(this, QString::fromLocal8Bit("确认重置"),
+                                    QString::fromLocal8Bit("确定要恢复所有设置为默认值吗？"),
                                     QMessageBox::Yes | QMessageBox::No);
     if (ret == QMessageBox::Yes)
     {
@@ -343,7 +350,7 @@ void SettingDialog::onResetButtonClicked()
 
 void SettingDialog::onBrowseSourceButtonClicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, "选择默认源目录",
+    QString dir = QFileDialog::getExistingDirectory(this, QString::fromLocal8Bit("选择默认源目录"),
                                                     ui->defaultSourceLineEdit->text());
     if (!dir.isEmpty())
     {
@@ -353,7 +360,7 @@ void SettingDialog::onBrowseSourceButtonClicked()
 
 void SettingDialog::onBrowseTargetButtonClicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, "选择默认输出目录",
+    QString dir = QFileDialog::getExistingDirectory(this, QString::fromLocal8Bit("选择默认输出目录"),
                                                     ui->defaultTargetLineEdit->text());
     if (!dir.isEmpty())
     {
@@ -382,4 +389,60 @@ void SettingDialog::accept()
 {
     saveSettings();
     QDialog::accept();
+}
+
+void SettingDialog::initThreadCountComboBox()
+{
+    ui->threadCountComboBox->clear();
+
+    // 添加自动检测选项
+    ui->threadCountComboBox->addItem(QString::fromLocal8Bit("自动检测"));
+
+    // 获取CPU核心数
+    int coreCount = QThread::idealThreadCount();
+    if (coreCount <= 0)
+        coreCount = 4;
+
+    // 添加常用线程数选项
+    QList<int> threadCounts = {1, 2, 4, 6, 8, 12, 16, 24, 32};
+    for (int count : threadCounts)
+    {
+        if (count <= coreCount)
+        {
+            ui->threadCountComboBox->addItem(QString::fromLocal8Bit("%1线程").arg(count));
+        }
+    }
+
+    ui->threadCountComboBox->setToolTip(QString("当前系统CPU核心数: %1\n推荐并发数: %2个文件")
+                                            .arg(coreCount)
+                                            .arg(getOptimalThreadCount()));
+}
+
+void SettingDialog::setThreadCountToUI(int threadCount)
+{
+    if (threadCount == 0)
+    {
+        ui->threadCountComboBox->setCurrentIndex(0);
+    }
+    else
+    {
+        QString threadText = QString::fromLocal8Bit("%1线程").arg(threadCount);
+        int index = ui->threadCountComboBox->findText(threadText);
+        if (index != -1)
+        {
+            ui->threadCountComboBox->setCurrentIndex(index);
+        }
+        else
+        {
+            ui->threadCountComboBox->setCurrentIndex(0);
+        }
+    }
+}
+
+int SettingDialog::getOptimalThreadCount() const
+{
+    int coreCount = QThread::idealThreadCount();
+    if (coreCount <= 0)
+        coreCount = 4;
+    return qMax(1, coreCount - 1);
 }

@@ -15,7 +15,9 @@ SOURCES += \
     selecteddirsdialog.cpp \
     settingdialog.cpp \
     transcoder.cpp \
-    transcodeworker.cpp \
+    transcodetask.cpp \
+    transcodetaskmanager.cpp \
+    utils/ffmpegutils.cpp \
     utils/httpclient.cpp
 
 HEADERS += \
@@ -24,7 +26,9 @@ HEADERS += \
     selecteddirsdialog.h \
     settingdialog.h \
     transcoder.h \
-    transcodeworker.h \
+    transcodetask.h \
+    transcodetaskmanager.h \
+    utils/ffmpegutils.h \
     utils/httpclient.h
 
 FORMS += \
