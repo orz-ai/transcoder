@@ -10,4 +10,7 @@ package
 
 
 qmake -tp vc transcoder.pro
+
+
+windeployqt transcoder.exe
 ```

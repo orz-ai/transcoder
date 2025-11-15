@@ -102,7 +102,6 @@ void Transcoder::startTranscode()
     connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
     connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
 
-    // 启动线程
     workerThread->start();
 
     QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("转码任务已开始！\n输出目录: %1").arg(targetPath));
@@ -204,19 +203,18 @@ void Transcoder::onTranscodeFinished()
 void Transcoder::onCurrentFileChanged(const QString &fileName)
 {
     ui->statusbar->showMessage(QString::fromLocal8Bit("正在转码: %1").arg(fileName));
-    qDebug() << "当前处理文件:" << fileName;
+    qDebug() << QString::fromLocal8Bit("当前处理文件:") << fileName;
 }
 
 void Transcoder::onFileProcessed(const QString &fileName, bool success)
 {
     if (success)
     {
-        qDebug() << "文件转码成功:" << fileName;
+        qDebug() << QString::fromLocal8Bit("文件转码成功:") << fileName;
     }
     else
     {
-        qDebug() << "文件转码失败:" << fileName;
-        // 可以选择显示错误提示或记录到日志
+        qDebug() << QString::fromLocal8Bit("文件转码失败:") << fileName;
     }
 }
 

@@ -47,7 +47,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideMiddle</enum>
@@ -70,8 +70,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>817</width>
-            <height>485</height>
+            <width>834</width>
+            <height>470</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="transcodeContentLayout">
@@ -330,10 +330,39 @@
               <property name="verticalSpacing">
                <number>12</number>
               </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="colorspaceLabel">
+              <item row="1" column="1">
+               <widget class="QComboBox" name="profileComboBox">
+                <item>
+                 <property name="text">
+                  <string>high (高)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>main (主)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>baseline (基线)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="profileLabel">
                 <property name="text">
-                 <string>色彩空间:</string>
+                 <string>编码档次:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QCheckBox" name="faststartCheckBox">
+                <property name="text">
+                 <string>启用快速启动 (movflags faststart)</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -356,62 +385,10 @@
                 </item>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="profileLabel">
+              <item row="0" column="0">
+               <widget class="QLabel" name="colorspaceLabel">
                 <property name="text">
-                 <string>编码档次:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QComboBox" name="profileComboBox">
-                <item>
-                 <property name="text">
-                  <string>high (高)</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>main (主)</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>baseline (基线)</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="threadsLabel">
-                <property name="text">
-                 <string>线程数:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QSpinBox" name="threadsSpinBox">
-                <property name="specialValueText">
-                 <string>自动</string>
-                </property>
-                <property name="minimum">
-                 <number>0</number>
-                </property>
-                <property name="maximum">
-                 <number>32</number>
-                </property>
-                <property name="value">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0" colspan="2">
-               <widget class="QCheckBox" name="faststartCheckBox">
-                <property name="text">
-                 <string>启用快速启动 (movflags faststart)</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
+                 <string>色彩空间:</string>
                 </property>
                </widget>
               </item>

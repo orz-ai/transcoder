@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1140</width>
-    <height>612</height>
+    <width>633</width>
+    <height>139</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>改名路径：</string>
+          <string>文件夹路径：</string>
          </property>
         </widget>
        </item>
@@ -35,10 +35,13 @@
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="spacing">
+        <number>18</number>
+       </property>
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>指定内容：</string>
+          <string>前缀内容：</string>
          </property>
         </widget>
        </item>
@@ -46,6 +49,23 @@
         <widget class="QLineEdit" name="contentInput"/>
        </item>
       </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <property name="spacing">
+      <number>19</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>后缀内容：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit"/>
      </item>
     </layout>
    </item>

@@ -76,12 +76,43 @@ void TranscodeTaskManager::start()
         QString sourceDir = it.key();
         QStringList files = it.value();
 
+        QDir sourceQDir(sourceDir);
+        QString dramaName = sourceQDir.dirName(); // 获取最后一级目录名
+
+        // 目标目录/
+        // └── 彩礼加了8万8
+        //    ├── 第1集_temp.mp4
+        //    ├── 第2集_temp.mp4
+        //    └── 第3集_temp.mp4
+
+        QString dramaTargetDir = QDir(m_targetDirectory).absoluteFilePath(dramaName);
+        QDir().mkpath(dramaTargetDir);
+
         for (const QString &fileName : files)
         {
             QString inputPath = QDir(sourceDir).absoluteFilePath(fileName);
-            QString outputPath = QDir(m_targetDirectory).absoluteFilePath(generateOutputFileName(fileName, "mp4"));
 
-            TranscodeTask *task = new TranscodeTask(inputPath, outputPath, fileName, m_settings, this);
+            QFileInfo fileInfo(fileName);
+            QString baseName = fileInfo.baseName();
+            QString finalOutputName = baseName + ".mp4";
+            QString tempOutputName = baseName + "_temp.mp4";
+
+            QString finalOutputPath = QDir(dramaTargetDir).absoluteFilePath(finalOutputName);
+            QString tempOutputPath = QDir(dramaTargetDir).absoluteFilePath(tempOutputName);
+            if (QFile::exists(finalOutputPath)) {
+                qDebug() << QString::fromLocal8Bit("文件已存在，跳过:") << finalOutputPath;
+                continue;
+            }
+
+            if (QFile::exists(tempOutputPath)) {
+                if (QFile::remove(tempOutputPath)) {
+                    qDebug() << QString::fromLocal8Bit("删除已存在的临时文件:") << tempOutputPath;
+                } else {
+                    qDebug() << QString::fromLocal8Bit("删除临时文件失败:") << tempOutputPath;
+                }
+            }
+
+            TranscodeTask *task = new TranscodeTask(inputPath, tempOutputPath, fileName, m_settings, this);
             m_threadPool->start(task);
             m_totalFiles++;
 
