@@ -10,35 +10,31 @@ on:
 
 env:
   QT_VERSION: '5.15.2'
-  CMAKE_VERSION: '3.20.0'
 
 jobs:
   build-windows:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        arch: [x64]
-        build_type: [Release]
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
     - name: Setup Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
         version: ${{ env.QT_VERSION }}
+        host: windows
+        target: desktop
         arch: win64_msvc2019_64
-        tools: 'tools_qtcreator,qt.tools.qtcreator'
         cache: true
         
     - name: Setup MSVC
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
       
     - name: Setup Visual Studio environment
       uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: ${{ matrix.arch }}
+        arch: x64
         
     - name: Create build directory
       run: mkdir build
@@ -66,174 +62,32 @@ jobs:
       run: |
         mkdir deploy\styles
         copy styles\*.qss deploy\styles\
-        if exist utils mkdir deploy\utils
-        if exist utils copy utils\*.* deploy\utils\
+        if exist utils (mkdir deploy\utils & copy utils\*.* deploy\utils\)
         
     - name: Create portable package
       run: |
-        7z a Qt-Transcoder-Windows-${{ matrix.arch }}.zip .\deploy\*
+        7z a Qt-Transcoder-Windows-x64.zip .\deploy\*
         
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: Qt-Transcoder-Windows-${{ matrix.arch }}
-        path: Qt-Transcoder-Windows-${{ matrix.arch }}.zip
-        
-  build-linux:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        build_type: [Release]
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          build-essential \
-          libgl1-mesa-dev \
-          libxkbcommon-x11-0 \
-          libxcb-icccm4 \
-          libxcb-image0 \
-          libxcb-keysyms1 \
-          libxcb-randr0 \
-          libxcb-render-util0 \
-          libxcb-xinerama0 \
-          libxcb-xfixes0
-          
-    - name: Setup Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: ${{ env.QT_VERSION }}
-        cache: true
-        
-    - name: Create build directory
-      run: mkdir build
-      
-    - name: Configure with qmake
-      working-directory: build
-      run: |
-        qmake ../transcoder.pro CONFIG+=release
-        
-    - name: Build application
-      working-directory: build
-      run: |
-        make -j$(nproc)
-        
-    - name: Create AppImage
-      run: |
-        mkdir -p deploy/usr/bin
-        mkdir -p deploy/usr/share/applications
-        mkdir -p deploy/usr/share/icons/hicolor/256x256/apps
-        mkdir -p deploy/usr/share/qt-transcoder/styles
-        
-        # Copy executable
-        cp build/transcoder deploy/usr/bin/
-        
-        # Copy styles
-        cp styles/*.qss deploy/usr/share/qt-transcoder/styles/
-        
-        # Create desktop file
-        cat > deploy/usr/share/applications/qt-transcoder.desktop << EOF
-        [Desktop Entry]
-        Type=Application
-        Name=Qt Transcoder
-        Comment=Video transcoding application
-        Exec=transcoder
-        Icon=qt-transcoder
-        Categories=AudioVideo;
-        EOF
-        
-        # Create AppRun
-        cat > deploy/AppRun << 'EOF'
-        #!/bin/bash
-        HERE="$(dirname "$(readlink -f "${0}")")"
-        export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
-        exec "${HERE}/usr/bin/transcoder" "$@"
-        EOF
-        chmod +x deploy/AppRun
-        
-        # Download linuxdeploy and qt plugin
-        wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-        wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
-        chmod +x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-qt-x86_64.AppImage
-        
-        # Create AppImage
-        ./linuxdeploy-x86_64.AppImage --appdir deploy --plugin qt --output appimage
-        
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: Qt-Transcoder-Linux-x86_64
-        path: Qt_Transcoder*.AppImage
-        
-  build-macos:
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        build_type: [Release]
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: ${{ env.QT_VERSION }}
-        cache: true
-        
-    - name: Create build directory
-      run: mkdir build
-      
-    - name: Configure with qmake
-      working-directory: build
-      run: |
-        qmake ../transcoder.pro CONFIG+=release
-        
-    - name: Build application
-      working-directory: build
-      run: |
-        make -j$(sysctl -n hw.ncpu)
-        
-    - name: Create app bundle
-      run: |
-        mkdir -p deploy
-        cp -R build/transcoder.app deploy/
-        
-        # Copy styles into Resources
-        mkdir -p deploy/transcoder.app/Contents/Resources/styles
-        cp styles/*.qss deploy/transcoder.app/Contents/Resources/styles/
-        
-    - name: Deploy Qt frameworks
-      run: |
-        macdeployqt deploy/transcoder.app -dmg
-        
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: Qt-Transcoder-macOS
-        path: deploy/transcoder.dmg
+        name: Qt-Transcoder-Windows-x64
+        path: Qt-Transcoder-Windows-x64.zip
         
   release:
-    needs: [build-windows, build-linux, build-macos]
+    needs: [build-windows]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       
     - name: Create release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           Qt-Transcoder-Windows-x64/*.zip
-          Qt-Transcoder-Linux-x86_64/*.AppImage
-          Qt-Transcoder-macOS/*.dmg
         draft: false
         prerelease: false
         generate_release_notes: true
