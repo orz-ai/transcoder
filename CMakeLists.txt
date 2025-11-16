@@ -27,6 +27,7 @@ set(SOURCES
     configmanager.cpp
     utils/httpclient.cpp
     utils/ffmpegutils.cpp
+    videoinfodialog.cpp
 )
 
 set(HEADERS
@@ -39,6 +40,7 @@ set(HEADERS
     configmanager.h
     utils/httpclient.h
     utils/ffmpegutils.h
+    videoinfodialog.h
 )
 
 set(UI_FILES

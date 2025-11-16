@@ -8,6 +8,7 @@
 #include <QListView>
 #include <QTreeView>
 #include "transcodetaskmanager.h"
+#include "videoinfodialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -41,6 +42,7 @@ public slots:
     void switchToDarkTheme();
     void showSelectedDirsDialog();
     void showSettingsDialog();
+    void showVideoInfoDialog();
 
 private:
     Ui::Transcoder *ui;

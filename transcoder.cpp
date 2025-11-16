@@ -22,6 +22,7 @@ Transcoder::Transcoder(QWidget *parent)
     ui->progressBar->setValue(0);
 
     connect(ui->renameFileBtn, &QPushButton::clicked, this, &Transcoder::renameFile);
+    connect(ui->videoInfoBtn, &QPushButton::clicked, this, &Transcoder::showVideoInfoDialog);
     // 选择
     connect(ui->transcodeBtn, &QPushButton::clicked, this, &Transcoder::startTranscode);
     // 选择转码目录
@@ -249,6 +250,13 @@ void Transcoder::showSettingsDialog()
         qDebug() << "转码设置已更新";
     }
 
+    dialog->deleteLater();
+}
+
+void Transcoder::showVideoInfoDialog()
+{
+    VideoInfoDialog *dialog = new VideoInfoDialog(this);
+    dialog->exec();
     dialog->deleteLater();
 }
 

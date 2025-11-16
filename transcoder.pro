@@ -18,7 +18,8 @@ SOURCES += \
     transcodetask.cpp \
     transcodetaskmanager.cpp \
     utils/ffmpegutils.cpp \
-    utils/httpclient.cpp
+    utils/httpclient.cpp \
+    videoinfodialog.cpp
 
 HEADERS += \
     configmanager.h \
@@ -29,7 +30,8 @@ HEADERS += \
     transcodetask.h \
     transcodetaskmanager.h \
     utils/ffmpegutils.h \
-    utils/httpclient.h
+    utils/httpclient.h \
+    videoinfodialog.h
 
 FORMS += \
     renamedialog.ui \
