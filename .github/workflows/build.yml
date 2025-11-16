@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  contents: write
+  packages: write
+
 env:
   QT_VERSION: '5.15.2'
 
@@ -91,10 +95,8 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@v2
       with:
-        files: |
-          artifacts/Qt-Transcoder-Windows-x64/*.zip
+        files: artifacts/Qt-Transcoder-Windows-x64/*.zip
         draft: false
         prerelease: false
-        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
