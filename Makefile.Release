@@ -56,7 +56,8 @@ SOURCES       = configmanager.cpp \
 		selecteddirsdialog.cpp \
 		settingdialog.cpp \
 		transcoder.cpp \
-		transcodeworker.cpp \
+		transcodetask.cpp \
+		transcodetaskmanager.cpp \
 		utils\ffmpegutils.cpp \
 		utils\httpclient.cpp release\qrc_resources.cpp \
 		release\moc_configmanager.cpp \
@@ -64,14 +65,15 @@ SOURCES       = configmanager.cpp \
 		release\moc_selecteddirsdialog.cpp \
 		release\moc_settingdialog.cpp \
 		release\moc_transcoder.cpp \
-		release\moc_transcodeworker.cpp
+		release\moc_transcodetaskmanager.cpp
 OBJECTS       = release\configmanager.obj \
 		release\main.obj \
 		release\renamedialog.obj \
 		release\selecteddirsdialog.obj \
 		release\settingdialog.obj \
 		release\transcoder.obj \
-		release\transcodeworker.obj \
+		release\transcodetask.obj \
+		release\transcodetaskmanager.obj \
 		release\ffmpegutils.obj \
 		release\httpclient.obj \
 		release\qrc_resources.obj \
@@ -80,14 +82,15 @@ OBJECTS       = release\configmanager.obj \
 		release\moc_selecteddirsdialog.obj \
 		release\moc_settingdialog.obj \
 		release\moc_transcoder.obj \
-		release\moc_transcodeworker.obj
+		release\moc_transcodetaskmanager.obj
 
 DIST          =  configmanager.h \
 		renamedialog.h \
 		selecteddirsdialog.h \
 		settingdialog.h \
 		transcoder.h \
-		transcodeworker.h \
+		transcodetask.h \
+		transcodetaskmanager.h \
 		utils\ffmpegutils.h \
 		utils\httpclient.h configmanager.cpp \
 		main.cpp \
@@ -95,7 +98,8 @@ DIST          =  configmanager.h \
 		selecteddirsdialog.cpp \
 		settingdialog.cpp \
 		transcoder.cpp \
-		transcodeworker.cpp \
+		transcodetask.cpp \
+		transcodetaskmanager.cpp \
 		utils\ffmpegutils.cpp \
 		utils\httpclient.cpp
 QMAKE_TARGET  = transcoder
@@ -174,7 +178,7 @@ all: Makefile.Release  release\transcoder.exe
 
 release\transcoder.exe: D:\Qt\5.15.2\msvc2019_64\lib\Qt5Widgets.lib D:\Qt\5.15.2\msvc2019_64\lib\Qt5Gui.lib D:\Qt\5.15.2\msvc2019_64\lib\Qt5Network.lib D:\Qt\5.15.2\msvc2019_64\lib\Qt5Core.lib D:\Qt\5.15.2\msvc2019_64\lib\qtmain.lib ui_renamedialog.h ui_selecteddirsdialog.h ui_settingdialog.h ui_transcoder.h $(OBJECTS) 
 	$(LINKER) $(LFLAGS) /MANIFEST:embed /OUT:$(DESTDIR_TARGET) @<<
-release\configmanager.obj release\main.obj release\renamedialog.obj release\selecteddirsdialog.obj release\settingdialog.obj release\transcoder.obj release\transcodeworker.obj release\ffmpegutils.obj release\httpclient.obj release\qrc_resources.obj release\moc_configmanager.obj release\moc_renamedialog.obj release\moc_selecteddirsdialog.obj release\moc_settingdialog.obj release\moc_transcoder.obj release\moc_transcodeworker.obj
+release\configmanager.obj release\main.obj release\renamedialog.obj release\selecteddirsdialog.obj release\settingdialog.obj release\transcoder.obj release\transcodetask.obj release\transcodetaskmanager.obj release\ffmpegutils.obj release\httpclient.obj release\qrc_resources.obj release\moc_configmanager.obj release\moc_renamedialog.obj release\moc_selecteddirsdialog.obj release\moc_settingdialog.obj release\moc_transcoder.obj release\moc_transcodetaskmanager.obj
 $(LIBS)
 <<
 
@@ -184,10 +188,10 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) transcoder.zip $(SOURCES) $(DIST) transcoder.pro ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\spec_pre.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\angle.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\windows-desktop.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\windows_vulkan_sdk.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\windows-vulkan.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\msvc-desktop.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\qconfig.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_edid_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_egl_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fb_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldebug_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickshapes_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_theme_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uiplugin.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_vulkan_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_zlib_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qt_functions.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qt_config.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\win32-msvc\qmake.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\spec_post.prf .qmake.stash ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\msvc-version.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\toolchain.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\default_pre.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\default_pre.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\resolve_config.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds_post.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\default_post.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\precompile_header.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\warn_on.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qt.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\resources_functions.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\resources.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\moc.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\opengl.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\uic.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qmake_use.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\file_copies.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\windows.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\testcase_targets.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\yacc.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\lex.prf transcoder.pro resources.qrc ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Widgets.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Gui.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Network.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Core.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\qtmain.prl   resources.qrc ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\data\dummy.cpp configmanager.h renamedialog.h selecteddirsdialog.h settingdialog.h transcoder.h transcodeworker.h utils\ffmpegutils.h utils\httpclient.h  configmanager.cpp main.cpp renamedialog.cpp selecteddirsdialog.cpp settingdialog.cpp transcoder.cpp transcodeworker.cpp utils\ffmpegutils.cpp utils\httpclient.cpp renamedialog.ui selecteddirsdialog.ui settingdialog.ui transcoder.ui    
+	$(ZIP) transcoder.zip $(SOURCES) $(DIST) transcoder.pro ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\spec_pre.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\angle.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\windows-desktop.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\windows_vulkan_sdk.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\windows-vulkan.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\msvc-desktop.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\qconfig.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3danimation_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dcore_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dextras_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dinput_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dlogic_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquick_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_3drender_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axbase_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_axserver_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_core_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_dbus_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designer_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_edid_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_egl_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fb_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gamepad_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_gui_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_help_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_location_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_network_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_nfc_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_opengl_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioning_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_positioningquick_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qml_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldebug_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlmodels_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quick_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickshapes_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_repparser_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_scxml_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sensors_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialbus_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_serialport_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_sql_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_svg_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_testlib_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_texttospeech_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_theme_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uiplugin.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_uitools_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_vulkan_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webchannel_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_websockets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_webview_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_widgets_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_winextras_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xml_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\modules\qt_lib_zlib_private.pri ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qt_functions.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qt_config.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\win32-msvc\qmake.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\spec_post.prf .qmake.stash ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\common\msvc-version.conf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\toolchain.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\default_pre.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\default_pre.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\resolve_config.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds_post.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\default_post.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\precompile_header.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\warn_on.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qt.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\resources_functions.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\resources.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\moc.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\opengl.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\uic.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\qmake_use.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\file_copies.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\win32\windows.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\testcase_targets.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\yacc.prf ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\lex.prf transcoder.pro resources.qrc ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Widgets.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Gui.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Network.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\Qt5Core.prl ..\..\..\Qt\5.15.2\msvc2019_64\lib\qtmain.prl   resources.qrc ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\data\dummy.cpp configmanager.h renamedialog.h selecteddirsdialog.h settingdialog.h transcoder.h transcodetask.h transcodetaskmanager.h utils\ffmpegutils.h utils\httpclient.h  configmanager.cpp main.cpp renamedialog.cpp selecteddirsdialog.cpp settingdialog.cpp transcoder.cpp transcodetask.cpp transcodetaskmanager.cpp utils\ffmpegutils.cpp utils\httpclient.cpp renamedialog.ui selecteddirsdialog.ui settingdialog.ui transcoder.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) release\configmanager.obj release\main.obj release\renamedialog.obj release\selecteddirsdialog.obj release\settingdialog.obj release\transcoder.obj release\transcodeworker.obj release\ffmpegutils.obj release\httpclient.obj release\qrc_resources.obj release\moc_configmanager.obj release\moc_renamedialog.obj release\moc_selecteddirsdialog.obj release\moc_settingdialog.obj release\moc_transcoder.obj release\moc_transcodeworker.obj
+	-$(DEL_FILE) release\configmanager.obj release\main.obj release\renamedialog.obj release\selecteddirsdialog.obj release\settingdialog.obj release\transcoder.obj release\transcodetask.obj release\transcodetaskmanager.obj release\ffmpegutils.obj release\httpclient.obj release\qrc_resources.obj release\moc_configmanager.obj release\moc_renamedialog.obj release\moc_selecteddirsdialog.obj release\moc_settingdialog.obj release\moc_transcoder.obj release\moc_transcodetaskmanager.obj
 
 distclean: clean 
 	-$(DEL_FILE) .qmake.stash
@@ -219,9 +223,9 @@ compiler_moc_predefs_clean:
 release\moc_predefs.h: ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\data\dummy.cpp
 	cl -BxD:\Qt\5.15.2\msvc2019_64\bin\qmake.exe -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E ..\..\..\Qt\5.15.2\msvc2019_64\mkspecs\features\data\dummy.cpp 2>NUL >release\moc_predefs.h
 
-compiler_moc_header_make_all: release\moc_configmanager.cpp release\moc_renamedialog.cpp release\moc_selecteddirsdialog.cpp release\moc_settingdialog.cpp release\moc_transcoder.cpp release\moc_transcodeworker.cpp
+compiler_moc_header_make_all: release\moc_configmanager.cpp release\moc_renamedialog.cpp release\moc_selecteddirsdialog.cpp release\moc_settingdialog.cpp release\moc_transcoder.cpp release\moc_transcodetaskmanager.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) release\moc_configmanager.cpp release\moc_renamedialog.cpp release\moc_selecteddirsdialog.cpp release\moc_settingdialog.cpp release\moc_transcoder.cpp release\moc_transcodeworker.cpp
+	-$(DEL_FILE) release\moc_configmanager.cpp release\moc_renamedialog.cpp release\moc_selecteddirsdialog.cpp release\moc_settingdialog.cpp release\moc_transcoder.cpp release\moc_transcodetaskmanager.cpp
 release\moc_configmanager.cpp: configmanager.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject.h \
@@ -795,23 +799,22 @@ release\moc_transcoder.cpp: transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qrubberband.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\QTreeView \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qtreeview.h \
-		transcodeworker.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		transcodetaskmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStringList \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMap \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QProcess \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocess.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QQueue \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qqueue.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt \
 		configmanager.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonvalue.h \
@@ -825,13 +828,13 @@ release\moc_transcoder.cpp: transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStandardPaths \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstandardpaths.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDir \
+		transcodetask.h \
 		release\moc_predefs.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\bin\moc.exe
 	D:\Qt\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include D:/project/qt/transcoder/release/moc_predefs.h -ID:/Qt/5.15.2/msvc2019_64/mkspecs/win32-msvc -ID:/project/qt/transcoder -ID:/Qt/5.15.2/msvc2019_64/include -ID:/Qt/5.15.2/msvc2019_64/include/QtWidgets -ID:/Qt/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15.2/msvc2019_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\ATLMFC\include" -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\include" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um" -I"D:\Windows Kits\10\include\10.0.19041.0\ucrt" -I"D:\Windows Kits\10\include\10.0.19041.0\shared" -I"D:\Windows Kits\10\include\10.0.19041.0\um" -I"D:\Windows Kits\10\include\10.0.19041.0\winrt" -I"D:\Windows Kits\10\include\10.0.19041.0\cppwinrt" -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include" -I"D:\Windows Kits\10\Include\10.0.18362.0\ucrt" -I"D:\Windows Kits\10\Include\10.0.18362.0\um" -I"D:\Windows Kits\10\Include\10.0.18362.0\shared" transcoder.h -o release\moc_transcoder.cpp
 
-release\moc_transcodeworker.cpp: transcodeworker.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+release\moc_transcodetaskmanager.cpp: transcodetaskmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobjectdefs.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qnamespace.h \
@@ -884,8 +887,6 @@ release\moc_transcodeworker.cpp: transcodeworker.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qvarlengtharray.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcontainerfwd.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject_impl.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStringList \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMap \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmap.h \
@@ -903,13 +904,15 @@ release\moc_transcodeworker.cpp: transcodeworker.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QProcess \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocess.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QQueue \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qqueue.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt \
 		configmanager.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonvalue.h \
@@ -930,9 +933,10 @@ release\moc_transcodeworker.cpp: transcodeworker.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfileinfo.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfile.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfiledevice.h \
+		transcodetask.h \
 		release\moc_predefs.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\bin\moc.exe
-	D:\Qt\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include D:/project/qt/transcoder/release/moc_predefs.h -ID:/Qt/5.15.2/msvc2019_64/mkspecs/win32-msvc -ID:/project/qt/transcoder -ID:/Qt/5.15.2/msvc2019_64/include -ID:/Qt/5.15.2/msvc2019_64/include/QtWidgets -ID:/Qt/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15.2/msvc2019_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\ATLMFC\include" -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\include" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um" -I"D:\Windows Kits\10\include\10.0.19041.0\ucrt" -I"D:\Windows Kits\10\include\10.0.19041.0\shared" -I"D:\Windows Kits\10\include\10.0.19041.0\um" -I"D:\Windows Kits\10\include\10.0.19041.0\winrt" -I"D:\Windows Kits\10\include\10.0.19041.0\cppwinrt" -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include" -I"D:\Windows Kits\10\Include\10.0.18362.0\ucrt" -I"D:\Windows Kits\10\Include\10.0.18362.0\um" -I"D:\Windows Kits\10\Include\10.0.18362.0\shared" transcodeworker.h -o release\moc_transcodeworker.cpp
+	D:\Qt\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include D:/project/qt/transcoder/release/moc_predefs.h -ID:/Qt/5.15.2/msvc2019_64/mkspecs/win32-msvc -ID:/project/qt/transcoder -ID:/Qt/5.15.2/msvc2019_64/include -ID:/Qt/5.15.2/msvc2019_64/include/QtWidgets -ID:/Qt/5.15.2/msvc2019_64/include/QtGui -ID:/Qt/5.15.2/msvc2019_64/include/QtANGLE -ID:/Qt/5.15.2/msvc2019_64/include/QtNetwork -ID:/Qt/5.15.2/msvc2019_64/include/QtCore -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\ATLMFC\include" -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\include" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um" -I"D:\Windows Kits\10\include\10.0.19041.0\ucrt" -I"D:\Windows Kits\10\include\10.0.19041.0\shared" -I"D:\Windows Kits\10\include\10.0.19041.0\um" -I"D:\Windows Kits\10\include\10.0.19041.0\winrt" -I"D:\Windows Kits\10\include\10.0.19041.0\cppwinrt" -I"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include" -I"D:\Windows Kits\10\Include\10.0.18362.0\ucrt" -I"D:\Windows Kits\10\Include\10.0.18362.0\um" -I"D:\Windows Kits\10\Include\10.0.18362.0\shared" transcodetaskmanager.h -o release\moc_transcodetaskmanager.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1231,23 +1235,22 @@ release\main.obj: main.cpp transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qrubberband.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\QTreeView \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qtreeview.h \
-		transcodeworker.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		transcodetaskmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStringList \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMap \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QProcess \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocess.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QQueue \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qqueue.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt \
 		configmanager.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonvalue.h \
@@ -1261,6 +1264,7 @@ release\main.obj: main.cpp transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStandardPaths \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstandardpaths.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDir \
+		transcodetask.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\QApplication \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qapplication.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcoreapplication.h \
@@ -1774,23 +1778,22 @@ release\transcoder.obj: transcoder.cpp transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qrubberband.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\QTreeView \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qtreeview.h \
-		transcodeworker.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		transcodetaskmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStringList \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMap \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QProcess \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocess.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QQueue \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qqueue.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt \
 		configmanager.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonvalue.h \
@@ -1804,6 +1807,7 @@ release\transcoder.obj: transcoder.cpp transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStandardPaths \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstandardpaths.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDir \
+		transcodetask.h \
 		ui_transcoder.h \
 		RenameDialog.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\QDialog \
@@ -1851,11 +1855,118 @@ release\transcoder.obj: transcoder.cpp transcoder.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtGui\qinputmethod.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QFile \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\QShortcut \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qshortcut.h
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtWidgets\qshortcut.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread
 
-release\transcodeworker.obj: transcodeworker.cpp transcodeworker.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread \
+release\transcodetask.obj: transcodetask.cpp transcodetask.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qglobal.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qconfig-bootstrapped.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qconfig.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtcore-config.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qsystemdetection.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocessordetection.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcompilerdetection.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtypeinfo.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qsysinfo.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qlogging.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qflags.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qatomic.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbasicatomic.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qatomic_bootstrap.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qgenericatomic.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qatomic_cxx11.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qatomic_msvc.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qglobalstatic.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmutex.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qnumeric.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qversiontagging.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QString \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstring.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qchar.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbytearray.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrefcount.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qnamespace.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qarraydata.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstringliteral.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstringalgorithms.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstringview.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstringbuilder.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QProcess \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocess.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qiodevice.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobjectdefs.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobjectdefs_impl.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qlist.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qalgorithms.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qiterator.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qhashfunctions.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qpair.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qvector.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcontainertools_impl.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qpoint.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbytearraylist.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstringlist.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qregexp.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstringmatcher.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcoreevent.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qscopedpointer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmetatype.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qvarlengtharray.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcontainerfwd.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject_impl.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qshareddata.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qhash.h \
+		configmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonObject \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonobject.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonvalue.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcborvalue.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdatetime.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcborcommon.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdebug.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmap.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtextstream.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qlocale.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qvariant.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qset.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcontiguouscache.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qsharedpointer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qsharedpointer_impl.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qregularexpression.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qurl.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qurlquery.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\quuid.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonDocument \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsondocument.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStandardPaths \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qstandardpaths.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDir \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdir.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfileinfo.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfile.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfiledevice.h \
+		transcodetaskmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStringList \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMap \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMutex \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt \
+		utils\ffmpegutils.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QSize \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qsize.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmargins.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDebug
+
+release\transcodetaskmanager.obj: transcodetaskmanager.cpp transcodetaskmanager.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobjectdefs.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qnamespace.h \
@@ -1908,8 +2019,6 @@ release\transcodeworker.obj: transcodeworker.cpp transcodeworker.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qvarlengtharray.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qcontainerfwd.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qobject_impl.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QStringList \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMap \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmap.h \
@@ -1927,13 +2036,15 @@ release\transcodeworker.obj: transcodeworker.cpp transcodeworker.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QProcess \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qprocess.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QMutex \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QQueue \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qqueue.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QTimer \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthread.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qdeadlinetimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qelapsedtimer.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt \
 		configmanager.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QJsonObject \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonobject.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qjsonvalue.h \
@@ -1954,18 +2065,10 @@ release\transcodeworker.obj: transcodeworker.cpp transcodeworker.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfileinfo.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfile.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qfiledevice.h \
-		utils\ffmpegutils.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QSize \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qsize.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qmargins.h \
+		transcodetask.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDebug \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QFileInfo \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QDateTime \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThreadPool \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qthreadpool.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\qrunnable.h \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QRunnable \
-		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QAtomicInt
+		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QThread
 
 release\ffmpegutils.obj: utils\ffmpegutils.cpp utils\ffmpegutils.h \
 		..\..\..\Qt\5.15.2\msvc2019_64\include\QtCore\QString \
@@ -2166,7 +2269,7 @@ release\moc_settingdialog.obj: release\moc_settingdialog.cpp
 
 release\moc_transcoder.obj: release\moc_transcoder.cpp 
 
-release\moc_transcodeworker.obj: release\moc_transcodeworker.cpp 
+release\moc_transcodetaskmanager.obj: release\moc_transcodetaskmanager.cpp 
 
 ####### Install
 

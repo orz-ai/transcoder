@@ -41,8 +41,8 @@ void SettingDialog::loadSettings()
     setTranscodeSettingsToUI(config->getTranscodeSettings());
     setSystemSettingsToUI(config->getSystemSettings());
 
-//    ui->languageComboBox->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
-//    ui->languageComboBox->setAttribute(Qt::WA_TranslucentBackground);
+    //    ui->languageComboBox->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    //    ui->languageComboBox->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 void SettingDialog::saveSettings()

@@ -19,22 +19,26 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES
     main.cpp
     transcoder.cpp
-    transcodeworker.cpp
+    transcodetask.cpp
+    transcodetaskmanager.cpp
     renamedialog.cpp
     settingdialog.cpp
     selecteddirsdialog.cpp
     configmanager.cpp
     utils/httpclient.cpp
+    utils/ffmpegutils.cpp
 )
 
 set(HEADERS
     transcoder.h
-    transcodeworker.h
+    transcodetask.h
+    transcodetaskmanager.h
     renamedialog.h
     settingdialog.h
     selecteddirsdialog.h
     configmanager.h
     utils/httpclient.h
+    utils/ffmpegutils.h
 )
 
 set(UI_FILES
