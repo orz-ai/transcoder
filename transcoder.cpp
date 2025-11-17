@@ -12,13 +12,48 @@
 #include <QFile>
 #include <QShortcut>
 #include <QThread>
+#include <QRegularExpression>
+#include <QHeaderView>
+#include <QDir>
 
 Transcoder::Transcoder(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::Transcoder)
 {
     ui->setupUi(this);
 
-    ui->progressLayout->hide();
+    // 设置应用程序图标
+    setWindowIcon(QIcon(":/icons/app_icon.png"));
+
+    // 初始化转码模型
+    transcodeModel = new TranscodeModel(this);
+
+    // 初始化代理模型用于筛选
+    proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(transcodeModel);
+    proxyModel->setFilterKeyColumn(1); // 按状态列筛选（序号列后状态列变为索引1）
+
+    ui->tableView->setModel(proxyModel);
+
+    // 设置表格属性
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setAlternatingRowColors(true);
+
+    // 设置header高度
+    ui->tableView->horizontalHeader()->setMaximumHeight(40);
+    ui->tableView->horizontalHeader()->setMinimumHeight(30);
+
+    // 设置各列宽度
+    ui->tableView->setColumnWidth(0, 60);  // 序号列
+    ui->tableView->setColumnWidth(1, 100); // 状态列
+    ui->tableView->setColumnWidth(2, 450); // 源路径列 - 加宽
+    ui->tableView->setColumnWidth(3, 450); // 目标路径列 - 加宽
+    ui->tableView->setColumnWidth(4, 60);  // 进度列 - 适中
+
+    // 设置列的调整策略 - 允许手动调整
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed); // 序号列固定
+    ui->tableView->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed); // 进度列固定    ui->progressLayout->hide();
     ui->progressBar->setValue(0);
 
     connect(ui->renameFileBtn, &QPushButton::clicked, this, &Transcoder::renameFile);
@@ -33,9 +68,9 @@ Transcoder::Transcoder(QWidget *parent)
     connect(ui->checkSelectedBtn, &QPushButton::clicked, this, &Transcoder::showSelectedDirsDialog);
     connect(ui->action_settings, &QAction::triggered, this, &Transcoder::showSettingsDialog);
 
-    // 主题切换连接 - 如果UI正确生成，取消注释以下行
-    // connect(ui->action_modern_theme, &QAction::triggered, this, &Transcoder::switchToModernTheme);
-    // connect(ui->action_dark_theme, &QAction::triggered, this, &Transcoder::switchToDarkTheme);
+    // 连接筛选器
+    connect(ui->statusFilterCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &Transcoder::onFilterStatusChanged);
 
     // 临时添加快捷键支持主题切换
     QShortcut *modernThemeShortcut = new QShortcut(QKeySequence("Ctrl+1"), this);
@@ -78,6 +113,9 @@ void Transcoder::startTranscode()
         return;
     }
 
+    // 在开始转码前再次更新已存在文件的状态
+    updateExistingFilesStatus();
+
     workerThread = new QThread(this);
     worker = new TranscodeTaskManager(this->selectedPaths);
     worker->setTargetDirectory(targetPath);
@@ -110,10 +148,10 @@ void Transcoder::startTranscode()
 
 void Transcoder::selectSourceDirs()
 {
-
     QFileDialog dialog(nullptr, QString::fromLocal8Bit("选择转码目录"));
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::DontUseNativeDialog, true);
+    dialog.setOption(QFileDialog::ShowDirsOnly, true); // 只显示目录
     dialog.setDirectory(QDir::homePath());
 
     auto *listView = dialog.findChild<QListView *>("listView");
@@ -134,27 +172,27 @@ void Transcoder::selectSourceDirs()
         }
 
         this->selectedPaths = validFiles;
+
+        // 立即加载文件到表格
+        loadFilesToTable();
     }
 }
 
 void Transcoder::selectTargetDir()
 {
-    QFileDialog dialog(nullptr, QString::fromLocal8Bit("选择保存目录"));
-    dialog.setFileMode(QFileDialog::Directory);
-    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
-    dialog.setDirectory(QDir::homePath());
+    QString selectedDir = QFileDialog::getExistingDirectory(
+        this,
+        QString::fromLocal8Bit("选择保存目录"),
+        QDir::homePath(),
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    auto *listView = dialog.findChild<QListView *>("listView");
-    if (listView)
-        listView->setSelectionMode(QAbstractItemView::MultiSelection);
-    auto *treeView = dialog.findChild<QTreeView *>("treeView");
-    if (treeView)
-        treeView->setSelectionMode(QAbstractItemView::MultiSelection);
-
-    if (dialog.exec() == QDialog::Accepted)
+    if (!selectedDir.isEmpty())
     {
-        QStringList selectedPaths = dialog.selectedFiles();
-        this->targetPath = selectedPaths.first();
+        this->targetPath = selectedDir;
+        qDebug() << "选中的目标目录:" << this->targetPath;
+
+        // 更新表格中已存在文件的状态
+        updateExistingFilesStatus();
     }
 }
 
@@ -203,8 +241,8 @@ void Transcoder::onTranscodeFinished()
 
 void Transcoder::onCurrentFileChanged(const QString &fileName)
 {
-    ui->statusbar->showMessage(QString::fromLocal8Bit("正在转码: %1").arg(fileName));
     qDebug() << QString::fromLocal8Bit("当前处理文件:") << fileName;
+    transcodeModel->updateRecordStatus(fileName, TranscodeStatus::Processing);
 }
 
 void Transcoder::onFileProcessed(const QString &fileName, bool success)
@@ -212,10 +250,12 @@ void Transcoder::onFileProcessed(const QString &fileName, bool success)
     if (success)
     {
         qDebug() << QString::fromLocal8Bit("文件转码成功:") << fileName;
+        transcodeModel->updateRecordStatus(fileName, TranscodeStatus::Success);
     }
     else
     {
         qDebug() << QString::fromLocal8Bit("文件转码失败:") << fileName;
+        transcodeModel->updateRecordStatus(fileName, TranscodeStatus::Failed, QString::fromLocal8Bit("转码失败"));
     }
 }
 
@@ -277,5 +317,127 @@ void Transcoder::applyTheme(const QString &themePath)
     {
         qApp->setStyleSheet(QString::fromUtf8(qss.readAll()));
         qss.close();
+    }
+}
+
+void Transcoder::onFilterStatusChanged()
+{
+    int currentIndex = ui->statusFilterCombo->currentIndex();
+    QString filterText;
+
+    switch (currentIndex)
+    {
+    case 0: // 全部
+        filterText = "";
+        break;
+    case 1: // 等待中
+        filterText = QString::fromLocal8Bit("等待中");
+        break;
+    case 2: // 转码中
+        filterText = QString::fromLocal8Bit("转码中");
+        break;
+    case 3: // 成功
+        filterText = QString::fromLocal8Bit("成功");
+        break;
+    case 4: // 失败
+        filterText = QString::fromLocal8Bit("失败");
+        break;
+    }
+
+    if (filterText.isEmpty())
+    {
+        proxyModel->setFilterRegularExpression(QRegularExpression());
+    }
+    else
+    {
+        proxyModel->setFilterRegularExpression(QRegularExpression(QRegularExpression::escape(filterText)));
+    }
+}
+
+void Transcoder::loadFilesToTable()
+{
+    if (selectedPaths.isEmpty())
+    {
+        return;
+    }
+
+    // 清空之前的记录
+    transcodeModel->clearRecords();
+
+    // 添加所有文件到模型
+    for (auto it = selectedPaths.begin(); it != selectedPaths.end(); ++it)
+    {
+        const QString &dirPath = it.key();
+        const QStringList &files = it.value();
+        for (const QString &file : files)
+        {
+            QString sourcePath = QDir(dirPath).absoluteFilePath(file);
+            QString targetFilePath; // 目标路径稍后设置
+            if (!targetPath.isEmpty())
+            {
+                targetFilePath = QDir(targetPath).absoluteFilePath(file);
+            }
+            transcodeModel->addRecord(file, sourcePath, targetFilePath);
+        }
+    }
+
+    // 如果目标路径已经设置，则更新已存在文件的状态
+    if (!targetPath.isEmpty())
+    {
+        updateExistingFilesStatus();
+    }
+}
+
+void Transcoder::updateExistingFilesStatus()
+{
+    if (targetPath.isEmpty())
+    {
+        qDebug() << "目标路径为空，跳过更新";
+        return;
+    }
+
+    // 更新所有记录的目标路径并检查文件是否已存在
+    int rowCount = transcodeModel->rowCount();
+    qDebug() << QString::fromLocal8Bit("准备更新文件状态，表格行数：") << rowCount;
+
+    for (int i = 0; i < rowCount; ++i)
+    {
+        QString sourcePath = transcodeModel->data(transcodeModel->index(i, TranscodeModel::SourcePath), Qt::DisplayRole).toString();
+
+        // 从源路径中提取文件名
+        QFileInfo sourceFileInfo(sourcePath);
+        QString fileName = sourceFileInfo.fileName();
+
+        qDebug() << QString::fromLocal8Bit("处理文件：") << fileName << QString::fromLocal8Bit("，源路径：") << sourcePath;
+
+        // 获取源文件所在目录名（剧集名）
+        QString sourceDir = sourceFileInfo.absolutePath();
+        QDir sourceQDir(sourceDir);
+        QString dramaName = sourceQDir.dirName(); // 获取最后一级目录名
+
+        // 构建最终输出路径，与TranscodeTaskManager::start()中的逻辑一致
+        QString dramaTargetDir = QDir(targetPath).absoluteFilePath(dramaName);
+        QString baseName = sourceFileInfo.baseName();
+        QString finalOutputName = baseName + ".mp4";
+        QString finalOutputPath = QDir(dramaTargetDir).absoluteFilePath(finalOutputName);
+
+        qDebug() << QString::fromLocal8Bit("最终输出路径：") << finalOutputPath;
+
+        // 更新目标路径
+        transcodeModel->setData(transcodeModel->index(i, TranscodeModel::TargetPath), finalOutputPath, Qt::EditRole);
+
+        // 检查目标文件是否已存在，如果存在则标记为成功
+        QFileInfo targetFileInfo(finalOutputPath);
+        if (targetFileInfo.exists() && targetFileInfo.isFile())
+        {
+            qDebug() << QString::fromLocal8Bit("文件已存在，标记为成功：") << finalOutputPath;
+            transcodeModel->updateRecordStatus(fileName, TranscodeStatus::Success);
+        }
+        else
+        {
+            qDebug() << QString::fromLocal8Bit("文件不存在，标记为等待：") << finalOutputPath;
+            // 如果文件不存在，确保状态为等待
+            transcodeModel->updateRecordStatus(fileName, TranscodeStatus::Pending);
+        }
     }
 }

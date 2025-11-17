@@ -21,6 +21,7 @@ set(SOURCES
     transcoder.cpp
     transcodetask.cpp
     transcodetaskmanager.cpp
+    transcodemodel.cpp
     renamedialog.cpp
     settingdialog.cpp
     selecteddirsdialog.cpp
@@ -34,6 +35,7 @@ set(HEADERS
     transcoder.h
     transcodetask.h
     transcodetaskmanager.h
+    transcodemodel.h
     renamedialog.h
     settingdialog.h
     selecteddirsdialog.h

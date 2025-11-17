@@ -1,4 +1,4 @@
-#ifndef RENAMEDIALOG_H
+﻿#ifndef RENAMEDIALOG_H
 #define RENAMEDIALOG_H
 
 #include <QDialog>

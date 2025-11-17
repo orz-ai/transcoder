@@ -7,8 +7,13 @@
 #include <QFileInfo>
 #include <QListView>
 #include <QTreeView>
+#include <QSortFilterProxyModel>
+#include <QComboBox>
+#include <QHBoxLayout>
+#include <QLabel>
 #include "transcodetaskmanager.h"
 #include "videoinfodialog.h"
+#include "transcodemodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -43,14 +48,19 @@ public slots:
     void showSelectedDirsDialog();
     void showSettingsDialog();
     void showVideoInfoDialog();
+    void onFilterStatusChanged();
 
 private:
     Ui::Transcoder *ui;
     QMap<QString, QStringList> validatePaths(const QStringList &paths);
     void applyTheme(const QString &themePath);
+    void loadFilesToTable();
+    void updateExistingFilesStatus();
 
     TranscodeTaskManager *worker;
     QThread *workerThread;
+    TranscodeModel *transcodeModel;
+    QSortFilterProxyModel *proxyModel;
     QMap<QString, QStringList> selectedPaths;
     QString targetPath;
 };

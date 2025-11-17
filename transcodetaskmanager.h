@@ -1,4 +1,4 @@
-#ifndef TRANSCODETASKMANAGER_H
+﻿#ifndef TRANSCODETASKMANAGER_H
 #define TRANSCODETASKMANAGER_H
 
 #include <QObject>
@@ -23,8 +23,7 @@ class TranscodeTaskManager : public QObject
 public:
     explicit TranscodeTaskManager(const QMap<QString, QStringList> &files, QObject *parent = nullptr);
     ~TranscodeTaskManager();
-
-    // 任务完成回调（供TranscodeTask调用）
+    
     void onTaskCompleted(const QString &fileName, bool success, const QString &outputPath);
 
 public slots:

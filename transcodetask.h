@@ -1,4 +1,4 @@
-#ifndef TRANSCODETASK_H
+﻿#ifndef TRANSCODETASK_H
 #define TRANSCODETASK_H
 
 #include <QRunnable>

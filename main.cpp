@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    // 设置应用程序图标（用于任务栏）
+    a.setWindowIcon(QIcon(":/icons/app_icon.png"));
+
     // 初始化配置管理器
     ConfigManager *config = ConfigManager::instance();
 
@@ -29,7 +32,7 @@ int main(int argc, char *argv[])
     }
     Transcoder w;
 
-    w.resize(QSize(257, 679));
+    w.resize(QSize(1200, 600));
     w.show();
 
     auto menus = w.menuBar()->findChildren<QMenu *>();

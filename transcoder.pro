@@ -17,6 +17,7 @@ SOURCES += \
     transcoder.cpp \
     transcodetask.cpp \
     transcodetaskmanager.cpp \
+    transcodemodel.cpp \
     utils/ffmpegutils.cpp \
     utils/httpclient.cpp \
     videoinfodialog.cpp
@@ -29,6 +30,7 @@ HEADERS += \
     transcoder.h \
     transcodetask.h \
     transcodetaskmanager.h \
+    transcodemodel.h \
     utils/ffmpegutils.h \
     utils/httpclient.h \
     videoinfodialog.h
