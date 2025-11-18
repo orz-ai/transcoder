@@ -16,6 +16,7 @@ cmake-build-debug-qt
 debug/
 release/
 out/
+deploy/
 out/build/
 build/
 cmake-build-*/

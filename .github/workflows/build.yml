@@ -39,6 +39,14 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
+    
+    - name: Set Windows locale for proper encoding
+      run: |
+        # Set code page to UTF-8 for proper Chinese character handling
+        chcp 65001
+        # Set environment variables for Qt
+        echo "QT_LOGGING_CONF=" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "QTDIR=$env:Qt5_DIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         
     - name: Create build directory
       run: mkdir build
@@ -46,11 +54,15 @@ jobs:
     - name: Configure with qmake
       working-directory: build
       run: |
-        qmake ..\transcoder.pro -spec win32-msvc CONFIG+=release
+        # Set code page to UTF-8 and configure with proper encoding flags
+        chcp 65001
+        qmake ..\transcoder.pro -spec win32-msvc CONFIG+=release QMAKE_CXXFLAGS+="-utf-8" DEFINES+=UNICODE
         
     - name: Build application
       working-directory: build
       run: |
+        # Set UTF-8 code page for build process
+        chcp 65001
         nmake
         
     - name: Create deployment directory

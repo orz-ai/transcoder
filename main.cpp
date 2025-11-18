@@ -1,6 +1,7 @@
 ﻿
 #include "transcoder.h"
 #include "configmanager.h"
+#include "encoding.h"
 
 #include <QApplication>
 #include <QTextCodec>
@@ -12,6 +13,14 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // 设置控制台代码页（Windows）
+    setConsoleCodePage();
+
+    // 设置文本编码为UTF-8，确保中文字符正确显示
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+#endif
 
     // 设置应用程序图标（用于任务栏）
     a.setWindowIcon(QIcon(":/icons/app_icon.png"));
