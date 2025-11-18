@@ -17,6 +17,7 @@ TranscodeTaskManager::TranscodeTaskManager(const QMap<QString, QStringList> &fil
     m_totalFiles = 0;
     m_completedFiles = 0;
     m_failedFiles = 0;
+    m_stopped = 0;
 }
 
 TranscodeTaskManager::~TranscodeTaskManager()
@@ -99,15 +100,20 @@ void TranscodeTaskManager::start()
 
             QString finalOutputPath = QDir(dramaTargetDir).absoluteFilePath(finalOutputName);
             QString tempOutputPath = QDir(dramaTargetDir).absoluteFilePath(tempOutputName);
-            if (QFile::exists(finalOutputPath)) {
+            if (QFile::exists(finalOutputPath))
+            {
                 qDebug() << QString::fromLocal8Bit("文件已存在，跳过:") << finalOutputPath;
                 continue;
             }
 
-            if (QFile::exists(tempOutputPath)) {
-                if (QFile::remove(tempOutputPath)) {
+            if (QFile::exists(tempOutputPath))
+            {
+                if (QFile::remove(tempOutputPath))
+                {
                     qDebug() << QString::fromLocal8Bit("删除已存在的临时文件:") << tempOutputPath;
-                } else {
+                }
+                else
+                {
                     qDebug() << QString::fromLocal8Bit("删除临时文件失败:") << tempOutputPath;
                 }
             }
@@ -115,19 +121,31 @@ void TranscodeTaskManager::start()
             TranscodeTask *task = new TranscodeTask(inputPath, tempOutputPath, fileName, m_settings, this);
             m_threadPool->start(task);
             m_totalFiles++;
-
-            emit currentFileChanged(fileName);
         }
     }
 
     qDebug() << QString::fromLocal8Bit("提交了 %1 个任务到线程池，最大并发: %2")
                     .arg(m_totalFiles.loadAcquire())
                     .arg(maxConcurrent);
+
+    // 如果没有文件需要转码，立即发射完成信号
+    if (m_totalFiles.loadAcquire() == 0)
+    {
+        qDebug() << QString::fromLocal8Bit("没有文件需要转码，直接完成");
+        emit finished();
+        return;
+    }
 }
 
 void TranscodeTaskManager::onTaskCompleted(const QString &fileName, bool success, const QString &outputPath)
 {
     QMutexLocker locker(&m_mutex);
+
+    // 如果已经停止，忽略后续任务结果
+    if (m_stopped.loadAcquire())
+    {
+        return;
+    }
 
     if (success)
     {
@@ -173,11 +191,31 @@ bool TranscodeTaskManager::createTargetDirectory(const QString &dirPath)
     {
         if (!dir.mkpath(dirPath))
         {
-            qDebug() << QString("无法创建目录: %1").arg(dirPath);
+            qDebug() << QString::fromLocal8Bit("无法创建目录: %1").arg(dirPath);
             return false;
         }
     }
     return true;
+}
+
+void TranscodeTaskManager::stop()
+{
+    qDebug() << QString::fromLocal8Bit("停止转码任务...");
+    m_stopped.store(1);
+
+    if (m_threadPool)
+    {
+        m_threadPool->clear(); // 清空等待中的任务
+        // 注意：正在运行的任务无法立即停止，但会在完成后被忽略
+    }
+
+    emit finished(); // 发出完成信号，结束转码过程
+}
+
+void TranscodeTaskManager::onTaskStarted(const QString &fileName)
+{
+    // 发射当前文件变更信号，将文件状态标记为"转码中"
+    emit currentFileChanged(fileName);
 }
 
 QString TranscodeTaskManager::generateOutputFileName(const QString &inputFileName, const QString &extension)

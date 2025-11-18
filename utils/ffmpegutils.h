@@ -1,4 +1,4 @@
-#ifndef FFMPEGUTILS_H
+﻿#ifndef FFMPEGUTILS_H
 #define FFMPEGUTILS_H
 
 #include <QString>

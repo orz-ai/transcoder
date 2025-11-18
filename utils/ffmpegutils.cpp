@@ -1,4 +1,4 @@
-#include "ffmpegutils.h"
+﻿#include "ffmpegutils.h"
 #include <QProcess>
 #include <QFileInfo>
 #include <QDebug>

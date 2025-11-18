@@ -206,7 +206,7 @@ SystemSettings SettingDialog::getSystemSettingsFromUI() const
         QString threadText = ui->threadCountComboBox->currentText();
         qDebug() << "Thread count text:" << threadText;
         settings.threadCount = threadText.left(threadText.indexOf(QString::fromLocal8Bit("线程"))).toInt();
-        qDebug() << "Parsed thread count:" << threadText.left(threadText.indexOf("线程"));
+        qDebug() << "Parsed thread count:" << threadText.left(threadText.indexOf(QString::fromLocal8Bit("线程")));
     }
 
     qDebug() << "Selected thread count:" << settings.threadCount;

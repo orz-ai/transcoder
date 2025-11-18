@@ -36,6 +36,7 @@ public:
 public slots:
     void renameFile();
     void startTranscode();
+    void stopTranscode(); // 停止转码
     void selectSourceDirs();
     void selectTargetDir();
     void updateProgress(int value);

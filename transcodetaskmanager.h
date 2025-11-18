@@ -23,11 +23,13 @@ class TranscodeTaskManager : public QObject
 public:
     explicit TranscodeTaskManager(const QMap<QString, QStringList> &files, QObject *parent = nullptr);
     ~TranscodeTaskManager();
-    
+
     void onTaskCompleted(const QString &fileName, bool success, const QString &outputPath);
+    void onTaskStarted(const QString &fileName); // 任务开始时调用
 
 public slots:
     void start();
+    void stop(); // 停止转码
 
     // 设置目标输出目录
     void setTargetDirectory(const QString &targetDir);
@@ -56,6 +58,7 @@ private:
     QAtomicInt m_totalFiles;
     QAtomicInt m_completedFiles;
     QAtomicInt m_failedFiles;
+    QAtomicInt m_stopped; // 停止标志
 
     // 私有方法
     bool createTargetDirectory(const QString &dirPath);

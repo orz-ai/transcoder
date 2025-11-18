@@ -43,13 +43,13 @@ QVariant TranscodeModel::data(const QModelIndex &index, int role) const
             switch (record.status)
             {
             case TranscodeStatus::Pending:
-                return QStringLiteral("等待中");
+                return QString::fromLocal8Bit("等待中");
             case TranscodeStatus::Processing:
-                return QStringLiteral("转码中");
+                return QString::fromLocal8Bit("转码中");
             case TranscodeStatus::Success:
-                return QStringLiteral("成功");
+                return QString::fromLocal8Bit("成功");
             case TranscodeStatus::Failed:
-                return QStringLiteral("失败");
+                return QString::fromLocal8Bit("失败");
             }
             break;
         case SourcePath:
@@ -67,7 +67,7 @@ QVariant TranscodeModel::data(const QModelIndex &index, int role) const
             }
             else if (record.status == TranscodeStatus::Failed)
             {
-                return QStringLiteral("失败");
+                return QString::fromLocal8Bit("失败");
             }
             return QString("-");
         }
@@ -158,15 +158,15 @@ QVariant TranscodeModel::headerData(int section, Qt::Orientation orientation, in
     switch (section)
     {
     case Index:
-        return QStringLiteral("序号");
+        return QString::fromLocal8Bit("序号");
     case Status:
-        return QStringLiteral("状态");
+        return QString::fromLocal8Bit("状态");
     case SourcePath:
-        return QStringLiteral("源路径");
+        return QString::fromLocal8Bit("源路径");
     case TargetPath:
-        return QStringLiteral("目标路径");
+        return QString::fromLocal8Bit("目标路径");
     case Progress:
-        return QStringLiteral("进度");
+        return QString::fromLocal8Bit("进度");
     }
 
     return QVariant();

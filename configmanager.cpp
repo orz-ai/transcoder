@@ -52,13 +52,13 @@ bool ConfigManager::loadConfig()
 
     if (!file.exists())
     {
-        qDebug() << "配置文件不存在，使用默认设置:" << configPath;
+        qDebug() << QString::fromLocal8Bit("配置文件不存在，使用默认设置:") << configPath;
         return saveConfig(); // 创建默认配置文件
     }
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "无法打开配置文件:" << file.errorString();
+        qDebug() << QString::fromLocal8Bit("无法打开配置文件:") << file.errorString();
         return false;
     }
 
@@ -88,7 +88,7 @@ bool ConfigManager::loadConfig()
         systemSettingsFromJson(root["system"].toObject());
     }
 
-    qDebug() << "配置文件加载成功:" << configPath;
+    qDebug() << QString::fromLocal8Bit("配置文件加载成功:") << configPath;
     return true;
 }
 
@@ -99,7 +99,7 @@ bool ConfigManager::saveConfig()
 
     if (!file.open(QIODevice::WriteOnly))
     {
-        qDebug() << "无法创建配置文件:" << file.errorString();
+        qDebug() << QString::fromLocal8Bit("无法创建配置文件:") << file.errorString();
         return false;
     }
 
@@ -112,7 +112,7 @@ bool ConfigManager::saveConfig()
     file.write(doc.toJson());
     file.close();
 
-    qDebug() << "配置文件保存成功:" << configPath;
+    qDebug() << QString::fromLocal8Bit("配置文件保存成功:") << configPath;
     return true;
 }
 

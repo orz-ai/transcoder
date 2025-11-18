@@ -127,23 +127,46 @@ void Transcoder::startTranscode()
     worker->moveToThread(workerThread);
 
     ui->progressBar->setValue(0);
-    ui->transcodeBtn->setEnabled(false);
+    ui->transcodeBtn->setText(QString::fromLocal8Bit("停止转码"));
+    ui->transcodeBtn->disconnect(); // 断开所有连接
+    connect(ui->transcodeBtn, &QPushButton::clicked, this, &Transcoder::stopTranscode);
     ui->progressLayout->show();
 
-    connect(worker, &TranscodeTaskManager::progressUpdated, this, &Transcoder::updateProgress);
-    connect(worker, &TranscodeTaskManager::finished, this, &Transcoder::onTranscodeFinished);
-    connect(worker, &TranscodeTaskManager::currentFileChanged, this, &Transcoder::onCurrentFileChanged);
-    connect(worker, &TranscodeTaskManager::fileProcessed, this, &Transcoder::onFileProcessed);
-    connect(worker, &TranscodeTaskManager::errorOccurred, this, &Transcoder::onTranscodeError);
+    connect(worker, &TranscodeTaskManager::progressUpdated, this, &Transcoder::updateProgress, Qt::QueuedConnection);
+    connect(worker, &TranscodeTaskManager::finished, this, &Transcoder::onTranscodeFinished, Qt::QueuedConnection);
+    connect(worker, &TranscodeTaskManager::currentFileChanged, this, &Transcoder::onCurrentFileChanged, Qt::QueuedConnection);
+    connect(worker, &TranscodeTaskManager::fileProcessed, this, &Transcoder::onFileProcessed, Qt::QueuedConnection);
+    connect(worker, &TranscodeTaskManager::errorOccurred, this, &Transcoder::onTranscodeError, Qt::QueuedConnection);
 
     connect(workerThread, &QThread::started, worker, &TranscodeTaskManager::start);
     connect(worker, &TranscodeTaskManager::finished, workerThread, &QThread::quit);
     connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
     connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
 
+    qDebug() << QString::fromLocal8Bit("准备启动转码线程...");
     workerThread->start();
+    qDebug() << QString::fromLocal8Bit("转码线程已启动");
 
     QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("转码任务已开始！\n输出目录: %1").arg(targetPath));
+}
+
+void Transcoder::stopTranscode()
+{
+    if (worker && workerThread && workerThread->isRunning())
+    {
+        qDebug() << QString::fromLocal8Bit("用户请求停止转码");
+
+        // 停止转码任务
+        worker->stop();
+
+        // 重新设置按钮状态
+        ui->transcodeBtn->setText(QString::fromLocal8Bit("开始转码"));
+        ui->transcodeBtn->disconnect();                                                      // 断开停止连接
+        connect(ui->transcodeBtn, &QPushButton::clicked, this, &Transcoder::startTranscode); // 重新连接开始转码
+        ui->progressLayout->hide();
+
+        QMessageBox::information(this, QString::fromLocal8Bit("提示"), QString::fromLocal8Bit("转码任务已停止"));
+    }
 }
 
 void Transcoder::selectSourceDirs()
@@ -189,7 +212,7 @@ void Transcoder::selectTargetDir()
     if (!selectedDir.isEmpty())
     {
         this->targetPath = selectedDir;
-        qDebug() << "选中的目标目录:" << this->targetPath;
+        qDebug() << QString::fromLocal8Bit("选中的目标目录:") << this->targetPath;
 
         // 更新表格中已存在文件的状态
         updateExistingFilesStatus();
@@ -232,11 +255,19 @@ void Transcoder::updateProgress(int value)
 
 void Transcoder::onTranscodeFinished()
 {
-    ui->transcodeBtn->setEnabled(true);
-    worker->deleteLater();
-    worker = nullptr;
+    qDebug() << QString::fromLocal8Bit("转码任务完成，重新启用界面");
+    ui->transcodeBtn->setText(QString::fromLocal8Bit("开始转码"));
+    ui->transcodeBtn->disconnect();                                                      // 断开停止连接
+    connect(ui->transcodeBtn, &QPushButton::clicked, this, &Transcoder::startTranscode); // 重新连接开始转码
+    ui->progressLayout->hide();
 
-    QMessageBox::information(this, QString::fromLocal8Bit("成功"), QString::fromLocal8Bit("所有视频文件转码成功！"));
+    if (worker)
+    {
+        worker->deleteLater();
+        worker = nullptr;
+    }
+
+    QMessageBox::information(this, QString::fromLocal8Bit("成功"), QString::fromLocal8Bit("所有视频文件转码完成！"));
 }
 
 void Transcoder::onCurrentFileChanged(const QString &fileName)
@@ -287,7 +318,7 @@ void Transcoder::showSettingsDialog()
     SettingDialog *dialog = new SettingDialog(this);
     if (dialog->exec() == QDialog::Accepted)
     {
-        qDebug() << "转码设置已更新";
+        qDebug() << QString::fromLocal8Bit("转码设置已更新");
     }
 
     dialog->deleteLater();
@@ -392,7 +423,7 @@ void Transcoder::updateExistingFilesStatus()
 {
     if (targetPath.isEmpty())
     {
-        qDebug() << "目标路径为空，跳过更新";
+        qDebug() << QString::fromLocal8Bit("目标路径为空，跳过更新");
         return;
     }
 

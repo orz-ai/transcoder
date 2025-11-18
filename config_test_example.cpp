@@ -32,13 +32,13 @@ void testConfigManager()
     // 保存配置
     if (config->saveConfig())
     {
-        qDebug() << "配置保存成功，文件位置:" << config->getConfigFilePath();
+        qDebug() << QString::fromLocal8Bit("配置保存成功，文件位置:") << config->getConfigFilePath();
     }
 
     // 测试配置加载
     if (config->loadConfig())
     {
-        qDebug() << "配置加载成功";
+        qDebug() << QString::fromLocal8Bit("配置加载成功");
         TranscodeSettings reloadedSettings = config->getTranscodeSettings();
         qDebug() << "重新加载的编码器:" << reloadedSettings.codec;
         qDebug() << "重新加载的CRF:" << reloadedSettings.crf;

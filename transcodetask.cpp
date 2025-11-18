@@ -16,6 +16,12 @@ void TranscodeTask::run()
 {
     qDebug() << QString::fromLocal8Bit("开始转码: %1").arg(m_fileName);
 
+    // 通知管理器任务开始
+    if (m_manager)
+    {
+        m_manager->onTaskStarted(m_fileName);
+    }
+
     QString command = buildFFmpegCommand(m_inputPath, m_outputPath);
     QProcess process;
 
@@ -24,7 +30,7 @@ void TranscodeTask::run()
                    process.exitCode() == 0 &&
                    process.exitStatus() == QProcess::NormalExit;
 
-    qDebug() << QString::fromLocal8Bit("转码%1: %2").arg(success ? "成功" : "失败").arg(m_fileName);
+    qDebug() << QString::fromLocal8Bit("转码%1: %2").arg(success ? QString::fromLocal8Bit("成功") : QString::fromLocal8Bit("失败")).arg(m_fileName);
 
     // 调用管理器的回调函数
     if (m_manager)
